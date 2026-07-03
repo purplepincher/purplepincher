@@ -21,6 +21,7 @@ not asserted from nothing.
 | [`git-native-agents-deep-review.md`](./git-native-agents-deep-review.md) | Empirically tested (not just read) — reproduced real concurrency bugs via live testing rather than repeating an unverified claim. |
 | [`openconstruct-cluster.md`](./openconstruct-cluster.md) | Why the 22-repo `openconstruct` SDK family isn't a fork candidate. |
 | [`edge-vessel-bridge-deep-dive.md`](./edge-vessel-bridge-deep-dive.md) | Corrects `ecosystem-survey.md`'s `edge-*` picks — neither held up under direct code inspection — and finds a better, previously unflagged candidate instead. |
+| [`nexus-cluster-deep-dive.md`](./nexus-cluster-deep-dive.md) | Corrects `ecosystem-survey.md`'s `nexus-*` pick and finds a real, verified 190K-LOC outlier (`nexus-runtime`) the original survey missed entirely. |
 | [`mmx-industry-patterns.md`](./mmx-industry-patterns.md) | External research on real-world precedents for distilling a sprawling research account into a focused org. |
 
 **A pattern worth naming**: independently, across at least five of these

@@ -225,6 +225,22 @@ textbook distributed-edge stack** — exactly purplepincher's territory.
 Treat as a *specification* to re-implement, not code to fork verbatim. Best
 single target if you want one: `nexus-comms` (MQTT + mesh).
 
+> **Correction (follow-up deep-dive, see
+> [`nexus-cluster-deep-dive.md`](./nexus-cluster-deep-dive.md)): the "best
+> single target" pick is wrong, and there's a real outlier this survey
+> missed entirely.** All 17 other `nexus-*` repos confirmed exactly as
+> guessed here (`nexus-comms` is 77 lines, an in-process Python dict with no
+> `paho-mqtt`, no sockets — not an MQTT bridge in any real sense). But
+> **`nexus-runtime` is a ~190K-LOC outlier**, not a stub: the deep-dive
+> compiled and ran its COBS codec by hand, ran its C firmware test suite
+> (52/52 passing), and pulled GitHub's own CI logs — not self-report —
+> showing 2,559 passing pytest tests. Worth pulling as code (clone-and-
+> harden, not clone-and-ship — CI has a cosmetic lint failure and a CMake
+> path bug, nothing functional). None of the 18 repos import each other;
+> this is a naming convention, not an integrated stack, confirming that
+> part of the original read. Defer to the linked document over this
+> paragraph for anything nexus-specific.
+
 **7. `edge-*` cluster (10) — edge-tier runtimes.**
 `edge-conservation-rs` (**`no_std`, small binary** for edge), 
 `edge-conservation-worker` + `edge-benchmark` (**Cloudflare Workers**
