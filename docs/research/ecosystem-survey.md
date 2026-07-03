@@ -236,6 +236,19 @@ clean edge story. Caveat: the "conservation law" branding is baggage; the
 (no_std edge verifier) and `edge-llama` (Jetson inference) as the two most
 concrete.
 
+> **Correction (follow-up deep-dive, see
+> [`edge-vessel-bridge-deep-dive.md`](./edge-vessel-bridge-deep-dive.md)):
+> neither of these two picks holds up under direct code inspection.**
+> `edge-conservation-rs`'s `no_std` claim is broken — it calls `libm::log()`
+> with zero declared dependencies, a compile error CI never catches because
+> CI re-enables `std` before testing. `edge-llama`'s "MVP Complete" README
+> describes ~2,600 lines of transformer code that isn't wired into its own
+> build file, and the one path that is built just echoes the input token
+> back rather than generating. The deep-dive found a better, unflagged pick
+> instead: `edge-relay-agent` (pure-stdlib Python, 79/79 tests passing
+> locally) — "genuinely the most ready to fork" repo in the cluster. Defer
+> to that document over this paragraph.
+
 **8. `vessel-bridge` + `vessel` — hardware abstraction + ops console.**
 Note these are **two different things**: `vessel-bridge` is the actual
 **hardware HAL** ("ESP32 to Jetson to Cloud — unified sensor" layer, 13 KB,
