@@ -25,6 +25,8 @@ not asserted from nothing.
 | [`budget-guardian-cluster.md`](./budget-guardian-cluster.md) | Actually built and ran the 13-repo budget-guardian family's test suites — corrects an overly-even "these are real, useful tools" read with per-repo verdicts (one repo doesn't even build as committed). |
 | [`lau-cluster-deep-dive.md`](./lau-cluster-deep-dive.md) | Confirms the 333-repo `lau-*` cluster is exactly what it looked like — thematically generated math/physics crates, no cross-repo integration, no hidden outlier. Not a fork target. |
 | [`exocortex-deep-dive.md`](./exocortex-deep-dive.md) | Demotes `exocortex` from its Tier-1 ranking — the "S3-compatible" claim is fabricated and its tests have never once actually run — and finds the real fork candidates hiding in the family are two previously unlisted repos, not the Python core everyone assumed was the centerpiece. |
+| [`cuda-oxide-cluster-deep-dive.md`](./cuda-oxide-cluster-deep-dive.md) | Confirms the 173-repo GPU cluster's out-of-scope call with hard evidence — only 3 repos contain actual CUDA code; the rest is branding over generic crates that duplicate ideas already found elsewhere. |
+| [`dev-tooling-cluster.md`](./dev-tooling-cluster.md) | Tested `si`/`onboard`/`superinstance-mcp` — the ecosystem's own meta-tooling — against this project's actual multi-agent build process. Zero forkable; `si` fails the adoption bar outright (fabricated crate claims, a hardcoded path, an `install.sh` that reports success unconditionally). |
 | [`mmx-industry-patterns.md`](./mmx-industry-patterns.md) | External research on real-world precedents for distilling a sprawling research account into a focused org. |
 
 **A pattern worth naming**: independently, across at least five of these

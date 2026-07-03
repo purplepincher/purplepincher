@@ -408,7 +408,14 @@ silence. Permanently out, with the specific evidence behind each call:
 - **Anything `sketch-*`, bulk scaffolding stubs, the Minecraft experiments,
   and GPU-specific compute (`cuda-*`/`oxide-*`)** — out of scope until this
   org actually has a GPU-dependent edge product, which it does not and has
-  no near-term plan to build.
+  no near-term plan to build. A follow-up deep-dive
+  ([`docs/research/cuda-oxide-cluster-deep-dive.md`](./docs/research/cuda-oxide-cluster-deep-dive.md))
+  confirmed this call with hard evidence: of 173 repos, only 3 contain
+  actual GPU/CUDA code; the rest describe GPU workloads in READMEs without
+  ever calling a CUDA API. The conceptually-relevant ideas mixed in (A2A
+  messaging, trust engines, reflex/edge runtimes) already have better,
+  already-identified implementations in `fleet-*`, `pincher`, `exocortex`,
+  and `nexus-runtime` — nothing here is a new asset worth the GPU baggage.
 - **Single-commit sketches wearing product names.** The broader ecosystem
   survey of vessel/edge-named repos specifically found near-duplicate repo
   pairs, NMEA parsers that parse nothing and return zeros (see
@@ -418,6 +425,19 @@ silence. Permanently out, with the specific evidence behind each call:
   adoption-bar items 1 and 2 exist and are checked *in order*, before
   anything else: we fork working software, not naming themes, and we verify
   that before we read a single word of the README.
+- **`si`, `onboard`, `superinstance-mcp`** — the ecosystem's own meta-tooling
+  for installing/composing/onboarding its developer tools. Appealing on
+  paper (this org runs its own multi-agent build process and could plausibly
+  use exactly this kind of tooling), but a deep-dive
+  ([`docs/research/dev-tooling-cluster.md`](./docs/research/dev-tooling-cluster.md))
+  found zero of three forkable: `si` fails adoption-bar item 3 outright (4 of
+  10 claimed "published crates" don't exist on crates.io, 2 more have
+  fabricated version numbers, a hardcoded `/home/phoenix/...` path ships in
+  `.mcp.json`, and `install.sh` reports success unconditionally via `|| true`
+  regardless of what actually happened). `onboard` and `superinstance-mcp`
+  aren't outright broken but aren't ready either. Two things worth
+  *referencing*, not forking: `onboard`'s PR-bot skeleton as a pattern, and
+  `superinstance-mcp`'s MCP-server wiring as a worked example.
 
 ---
 
