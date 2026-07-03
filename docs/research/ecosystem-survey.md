@@ -188,6 +188,26 @@ Surrounded by real client repos: `exocortex-esp32` (sensor node),
 `exocortex-script-lua`. This is a genuine **distributed-edge-memory** system
 with an embedded tier — squarely purplepincher. Polish gaps: (1) README is a
 stub (badges + related-repos list, no real usage docs), (2) needs a "deploy
+
+> **Correction (follow-up deep-dive, see
+> [`exocortex-deep-dive.md`](./exocortex-deep-dive.md)): this Tier-1 ranking
+> does not hold up — recommend demotion.** Three of the four headline claims
+> above are false or unverified at the code level: the "S3-compatible"
+> claim is fabricated (zero S3 code anywhere across all 15 related repos —
+> the real backend is in-process Python dicts plus an untested SurrealDB
+> fallback, neither S3-compatible); the test suite has **never once
+> actually run** — the CI log shows `collected 0 items / 2 errors` on its
+> only run, masked green by a `pytest || true` pattern; and the "genuine
+> multi-repo client family" is actually 3 working clients + 1 broken-target
+> client + 8 independent reimplementations + 1 off-topic repo, not an
+> integrated system (the survey also undercounted it — 15 real repos exist,
+> not 6). **The strongest artifact in the whole family isn't the Python
+> core at all**: `exocortex-mcp-ts` (real backprop, 87/87 tests passing
+> across three Node versions, a genuine non-mocked MCP server) and
+> `exocortex-kernel-c` (real embedded C, previously unlisted) are the actual
+> fork candidates if this cluster is revisited. The Vision doc's more
+> cautious Watchlist framing (below) holds up and is, if anything,
+> understated — defer to it over this paragraph.
 one server + one ESP32 node" quickstart, (3) formalize the S3 compatibility
 surface.
 

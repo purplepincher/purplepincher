@@ -306,9 +306,18 @@ org doesn't yet have the need that would justify the fork cost.
   architecture is genuinely on-mission for an edge-development org. The
   current core, however, is mocked: random embeddings, a training loop that
   sleeps and then reports a random accuracy number rather than training
-  anything. Re-evaluate when the sketchbook's own versions stop being
-  placeholders — or, alternatively, adopt the architecture only (not the
-  code) if this org ever builds memory infrastructure itself from scratch.
+  anything — and a follow-up deep-dive
+  ([`docs/research/exocortex-deep-dive.md`](./docs/research/exocortex-deep-dive.md))
+  confirmed this is worse than it first looked: the "S3-compatible storage"
+  claim is fabricated (zero S3 code anywhere), and the test suite has never
+  once actually collected or run, masked green by `pytest || true`. Re-evaluate
+  the Python core when the sketchbook's own versions stop being placeholders
+  — or, alternatively, adopt the architecture only (not the code) if this org
+  ever builds memory infrastructure itself from scratch. **If this cluster is
+  ever revisited, start with `exocortex-mcp-ts` (a real, tested, non-mocked
+  MCP server, 87/87 tests passing) or `exocortex-kernel-c` (real embedded C)
+  instead of the Python core** — the deep-dive found these are the only
+  genuinely solid artifacts in the whole 15-repo family.
 - **`git-native-agents`** — multi-agent coordination built entirely on git
   primitives: each agent is a repo, messages are files committed to a
   recipient's `inbox/`, memory is `memory/*.txt` plus git tags,

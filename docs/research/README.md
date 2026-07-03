@@ -23,6 +23,8 @@ not asserted from nothing.
 | [`edge-vessel-bridge-deep-dive.md`](./edge-vessel-bridge-deep-dive.md) | Corrects `ecosystem-survey.md`'s `edge-*` picks — neither held up under direct code inspection — and finds a better, previously unflagged candidate instead. |
 | [`nexus-cluster-deep-dive.md`](./nexus-cluster-deep-dive.md) | Corrects `ecosystem-survey.md`'s `nexus-*` pick and finds a real, verified 190K-LOC outlier (`nexus-runtime`) the original survey missed entirely. |
 | [`budget-guardian-cluster.md`](./budget-guardian-cluster.md) | Actually built and ran the 13-repo budget-guardian family's test suites — corrects an overly-even "these are real, useful tools" read with per-repo verdicts (one repo doesn't even build as committed). |
+| [`lau-cluster-deep-dive.md`](./lau-cluster-deep-dive.md) | Confirms the 333-repo `lau-*` cluster is exactly what it looked like — thematically generated math/physics crates, no cross-repo integration, no hidden outlier. Not a fork target. |
+| [`exocortex-deep-dive.md`](./exocortex-deep-dive.md) | Demotes `exocortex` from its Tier-1 ranking — the "S3-compatible" claim is fabricated and its tests have never once actually run — and finds the real fork candidates hiding in the family are two previously unlisted repos, not the Python core everyone assumed was the centerpiece. |
 | [`mmx-industry-patterns.md`](./mmx-industry-patterns.md) | External research on real-world precedents for distilling a sprawling research account into a focused org. |
 
 **A pattern worth naming**: independently, across at least five of these
