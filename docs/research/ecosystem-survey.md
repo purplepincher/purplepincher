@@ -321,6 +321,24 @@ production-minded dev tools* (enforce token/time/build budgets on Codex/Dify
 workflows). Understated and genuinely good — a coherent mini-product family
 worth pulling out.
 
+> **Correction (follow-up deep-dive, see
+> [`budget-guardian-cluster.md`](./budget-guardian-cluster.md)): "these are
+> real, useful, production-minded dev tools" is too generous applied evenly
+> across the family.** The deep-dive built and ran the actual test suites
+> rather than trusting badges: `codex-budget-guard` doesn't build as
+> committed (its `Cargo.toml` has a path dependency to a directory that only
+> exists on the original author's machine); `ToolGuardian` (the largest repo
+> in the family) fails 27 of its own 102 tests when run, including core
+> claims like timeout enforcement; `dify-budget-watchdog` displays a
+> crates.io badge for a package that isn't published. Two genuinely solid
+> repos emerged instead: `build-guardian`/`storage-guardian` (55/55 and
+> 39/39 tests passing, actually published) though they budget JS bundle
+> size and file storage, not LLM tokens — and `conservation-guardian`
+> (published on PyPI, clean CI, and the one repo in the family that's
+> actually about LLM/agent workflow cost — the closest real fit if this
+> project wants to adopt one). Defer to the linked document for
+> per-repo verdicts.
+
 ### Explicit non-recommendations (save the effort)
 
 - **All `sketch-*` (10):** disposable notes; `sketch-workspace-sketchbook-pattern`

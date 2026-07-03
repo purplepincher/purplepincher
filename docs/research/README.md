@@ -22,6 +22,7 @@ not asserted from nothing.
 | [`openconstruct-cluster.md`](./openconstruct-cluster.md) | Why the 22-repo `openconstruct` SDK family isn't a fork candidate. |
 | [`edge-vessel-bridge-deep-dive.md`](./edge-vessel-bridge-deep-dive.md) | Corrects `ecosystem-survey.md`'s `edge-*` picks — neither held up under direct code inspection — and finds a better, previously unflagged candidate instead. |
 | [`nexus-cluster-deep-dive.md`](./nexus-cluster-deep-dive.md) | Corrects `ecosystem-survey.md`'s `nexus-*` pick and finds a real, verified 190K-LOC outlier (`nexus-runtime`) the original survey missed entirely. |
+| [`budget-guardian-cluster.md`](./budget-guardian-cluster.md) | Actually built and ran the 13-repo budget-guardian family's test suites — corrects an overly-even "these are real, useful tools" read with per-repo verdicts (one repo doesn't even build as committed). |
 | [`mmx-industry-patterns.md`](./mmx-industry-patterns.md) | External research on real-world precedents for distilling a sprawling research account into a focused org. |
 
 **A pattern worth naming**: independently, across at least five of these
