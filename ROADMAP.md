@@ -371,6 +371,21 @@ org doesn't yet have the need that would justify the fork cost.
   found real engineering gaps to fix first regardless (no `dt` parameter, no
   output clamping, non-standard cascade wiring, and a `PLUG_AND_PLAY.md`
   that documents a 3-argument API the code doesn't actually have).
+- **`vessel-tuner`** — a real, currently-live Cloudflare Worker that scans a
+  fleet of CF Workers for health/latency/size/spec/security and scores them,
+  found during a deep-dive of the remaining `vessel-*` repos
+  ([`docs/research/vessel-cluster-remaining-deep-dive.md`](./docs/research/vessel-cluster-remaining-deep-dive.md))
+  that otherwise confirmed the vessel cluster has nothing more to offer
+  `cocapn-foundation`'s technical needs (the `plato-vessel-core` +
+  `vessel-bridge` picks stand unchanged). Unlike everything else examined in
+  that pass, this one is genuinely iteratively developed (8 real commits with
+  messages like "Fix scanner — use GitHub raw as primary (CF 1042
+  workaround)") rather than a single squashed commit. Named, bounded cleanup
+  before use: fix a discarded-fallback-fetch bug, implement or delete the
+  "last 100 scans" claim, remove two other README overclaims, and
+  parameterize the hardcoded fleet list. **This is generic fleet-ops
+  tooling, not cocapn substrate** — worth tracking as a small standalone
+  utility, not folded into the cocapn work.
 
 ---
 
