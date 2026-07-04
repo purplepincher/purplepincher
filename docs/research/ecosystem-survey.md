@@ -138,6 +138,27 @@ last 2 weeks.
 | `craftmind-*` | 8 | Minecraft AI games. | None | Low |
 | `sketch-*` | 10 | Disposable notes/logs (explicitly documented as such in `sketch-workspace-sketchbook-pattern`). | **None — do not fork.** | High (recent) |
 
+> **Correction/expansion on `plato-*` (follow-up deep-dive, see
+> [`plato-cluster-survey.md`](./plato-cluster-survey.md)): "Medium fit"
+> is too generous for the cluster as a whole, but two genuinely real,
+> tested new fork candidates were found within it.** A full survey
+> across all sub-families (`plato-tile-*`, `plato-room-*`, `plato-
+> engine-block-*`, `plato-jepa*`, `plato-forge-*`, standalone/core, and
+> ~200 other outliers) confirmed `plato-tile-*` and `plato-room-*` are
+> **not** a coherent microservice architecture — zero cross-repo
+> imports, zero shared schema, several repos import-broken or calling
+> methods that don't exist. But `plato-semantic-search` (a Cloudflare
+> Worker, 67/67 tests actually run and passing) and `plato-engine-block-c`
+> (a C99 room-runtime, 35/35 tests actually run and passing) are
+> genuinely real and match their READMEs — the strongest new finds in
+> the whole 278-repo family, alongside the already-known
+> `plato-vessel-core`. `plato-core` is a clean shared-foundation
+> candidate. The cluster's biggest repos by size
+> (`plato-training` at 38K+ LOC, `plato-portal`, `plato-tour-guide`)
+> are either un-runnable (undeclared dependencies) or mostly
+> documentation. Defer to the linked document for the full sub-cluster
+> breakdown and verification details.
+
 ---
 
 ## 3. Ranked shortlist for purplepincher fork candidacy
