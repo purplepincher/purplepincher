@@ -178,6 +178,34 @@ extras, (2) `cocapn-cli` is referenced but **not on PyPI** — publish it,
 (3) add persistence backends beyond flat JSONL, (4) real test coverage
 numbers.
 
+> **Correction and expansion (follow-up deep-dive, see
+> [`cocapn-family-deep-dive.md`](./cocapn-family-deep-dive.md)): the family
+> is both bigger and messier than this paragraph suggests, in ways that
+> matter before forking anything.** The real family is 76 `cocapn-*` repos
+> plus the core, not the ~7 named above. Critical finding: **`pip install
+> cocapn` works, but the published 0.3.0 artifact does not match
+> `SuperInstance/cocapn`'s actual source** — the repo is at 0.1.0 with a
+> different design (Tiles/Rooms/Flywheel) than what PyPI's description and
+> code describe ("Async fleet engine with Pydantic v2"). Worse: **three
+> separate repos** (`cocapn`, `cocapn-py`, `cocapn-python`) all declare the
+> same `cocapn` package name, and none of the three match what's actually
+> published. This isn't a small gap — it's the single biggest
+> pre-condition for adopting anything in this family: decide which repo
+> owns the name before forking, don't assume "on PyPI" means "this repo is
+> what ships."
+>
+> The good news the correction also found: roughly **25-30 of the 77
+> repos are genuinely real and tested** — `cocapn-health` (113 passing
+> tests), `cocapn-plato` (~7,500 LOC, 85 passing tests), `cocapn-explain`
+> (59 tests, PyPI 0.2.1), `cocapn-lessons` (66 tests) are all real,
+> substantial, working Python packages, several already published (just
+> with repo/registry versions out of sync in both directions). There's
+> also a genuinely coherent Rust/C/Zig/WASM bare-metal tier (deadband/PID/
+> NMEA/device primitives) that's a real multi-target story, not scaffolding
+> — `cocapn-marine` is "the most complete marine sensor stack" found, just
+> needs a 111MB `target/` directory stripped before it's fork-ready.
+> Defer to the linked document's tiered fork list over this paragraph.
+
 **3. `exocortex` — distributed cognitive memory substrate (Python).**
 Persistent multi-agent memory, **S3-compatible** storage, "shadow rendering,
 tiered compute, **ESP32 support**." Structured Python project (`src/`,

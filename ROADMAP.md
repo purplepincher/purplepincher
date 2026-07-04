@@ -264,11 +264,30 @@ HTTP probe:
 published on PyPI already, unlike almost everything else in scope — with a
 credible multi-target story spanning Python, Zig (bare-metal), and WASM.
 
-**Known gaps, all closeable:** publish the CLI the docs already reference but
-that doesn't yet exist; split the sprawling repo family into a documented
-core plus optional extras (consistent with this org's "ideology stripped to
-optional" bar); add real persistence beyond flat JSONL; and get honest
-test-coverage numbers rather than claimed ones.
+**Known gaps, all closeable — but one is now known to be more serious than
+it looked.** A full 77-repo family deep-dive
+([`docs/research/cocapn-family-deep-dive.md`](./docs/research/cocapn-family-deep-dive.md))
+found the PyPI-published `cocapn` 0.3.0 **does not actually match**
+`SuperInstance/cocapn`'s source, and **three separate repos**
+(`cocapn`, `cocapn-py`, `cocapn-python`) all claim the same package name.
+This has to be resolved — deciding which repo actually owns the `cocapn`
+name — before anything else in this step, not treated as one gap among
+several. The other gaps still stand: publish the CLI the docs already
+reference but that doesn't yet exist (and note `cocapn-cli` on crates.io
+is a theming library, not the referenced CLI, per the same deep-dive);
+split the sprawling repo family into a documented core plus optional
+extras; add real persistence beyond flat JSONL; get honest test-coverage
+numbers rather than claimed ones.
+
+**Also newly found**: a coherent, genuinely real Rust/C/Zig/WASM
+bare-metal tier underneath the Python core (deadband/PID/NMEA/device
+primitives — `cocapn-marine`, `cocapn-core`, `cocapn-c`, `cocapn-zig`,
+`cocapn-wasm`), several with real test coverage (45+ passing tests on
+the C port). This strengthens the case for eventually adopting this
+family — there's more real, working substance here than the original
+survey credited — but the namespace mess above has to be untangled
+first, or purplepincher would inherit a naming collision on day one of
+this step.
 
 **Why step 4 and not step 2, deliberately.** `cocapn` is an agent framework,
 and this org's rule is that it adopts an agent framework when a shipped
