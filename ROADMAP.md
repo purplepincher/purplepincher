@@ -345,9 +345,16 @@ Repos that have already earned the shell and are listed in the README's
   budget-and-waste guardrail for LLM/agent workflows, on PyPI.
 - **[sonar-vision](https://github.com/purplepincher/sonar-vision)** —
   sonar simulation, tracking, and mapping toolkit.
-
-An eighth infrastructure repo, **exocortex-mcp-ts**, is finishing
-polish and will be listed when it lands, not before.
+- **[exocortex-mcp-ts](https://github.com/purplepincher/exocortex-mcp-ts)** —
+  zero-dependency TypeScript MCP server, 87 passing tests.
+- **[constraint-theory-core](https://github.com/purplepincher/constraint-theory-core)** —
+  zero-dependency geometric constraint-solving crate, 262 passing tests.
+  Forked on its own merit, not as part of any larger story — see
+  `docs/research/FABLE_SYNTHESIS.md` for why no unifying narrative was
+  invented for this and the next entry.
+- **[intent-directed-compilation](https://github.com/purplepincher/intent-directed-compilation)** —
+  a real, modest AVX-512 benchmark with honest errata, paired with two
+  genuinely complete Coq proofs salvaged from `constraint-theory-math`.
 
 ---
 

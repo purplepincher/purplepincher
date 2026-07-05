@@ -75,7 +75,7 @@ the sketchbook's.
 
 ## What is actually here
 
-Nine repositories have earned the shell. One of them is a field-facing
+Eleven repositories have earned the shell. One of them is a field-facing
 product; the rest are infrastructure — real, tested, working, but "done" in
 an earlier and quieter sense than a thing that has met its users. The
 distinction matters, so it is drawn for every entry.
@@ -130,10 +130,21 @@ them, and the reason they sit a tier below DeckBoss rather than beside it.
 - **[sonar-vision](https://github.com/purplepincher/sonar-vision)** — a
   pure-Python sonar simulation, tracking, and mapping toolkit, with
   realistic multi-target simulation tests.
-
-A ninth, **exocortex-mcp-ts** (a zero-dependency TypeScript MCP server with
-real compute kernels), is finishing polish and will be listed here when it
-lands, not before.
+- **[exocortex-mcp-ts](https://github.com/purplepincher/exocortex-mcp-ts)**
+  — a zero-runtime-dependency TypeScript MCP server and REST API, with
+  from-scratch compute kernels (a tiny MLP, logistic regression, k-means).
+  87 passing tests.
+- **[constraint-theory-core](https://github.com/purplepincher/constraint-theory-core)**
+  — a zero-dependency Rust crate for deterministic 2D vector snapping and
+  general geometric constraint-solving (KD-tree, CSP/backtracking/CDCL).
+  262 passing tests. No part of it is required by, or explains, any other
+  repo here — it stands on its own merit, not as part of an invented story.
+- **[intent-directed-compilation](https://github.com/purplepincher/intent-directed-compilation)**
+  — a small, honest research artifact: a real ~3.17x mixed-precision SIMD
+  speedup with published run-to-run variance and the author's own errata
+  preserved, paired with two genuinely complete (not `Admitted`) Coq proofs
+  salvaged from a sibling repo. The rarest thing in the sketchbook: math
+  that survives being checked line by line.
 
 ---
 
