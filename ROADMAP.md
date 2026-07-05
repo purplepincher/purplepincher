@@ -487,14 +487,32 @@ all sits on top of doesn't ship either (see the essay's own honesty
 section and the two prior-art checks under `docs/research/`). No
 mechanism beyond what is written here has been designed: how a repo
 declares compatibility, what the publish flow looks like, and what the
-agent's search actually queries are all open questions. (Illustratively —
-not decided — a GitHub topic on the repo could be the entire convention;
-topics are the same machinery this mission's 4,095-repo sweeps already
-ran on. That is a gesture at feasibility, not a design.) This direction
-gets no engineering time ahead of Step 1's gate, same as everything else
-in this file. It goes on the record now so this call and the
-fleet-learning rejection can be read side by side, and so a future reader
-can see the org said no to one and yes to the other for the same reason:
+agent's search actually queries are all open questions.
+
+A prior draft of this entry gestured at "a GitHub topic could be the
+entire convention." Real precedent says that gesture was too thin, and
+it's worth correcting rather than leaving on the record inaccurate:
+`docs/research/tagging-precedent-findings.md` verified eight real
+systems with genuinely working discovery tooling (HACS, Arduino Library
+Manager, PlatformIO, the MCP Registry, Obsidian, VS Code, npm/Cargo/PyPI,
+awesome-lists) and found every one of them layers a small manifest file
+on top of any topic/badge — a bare topic is never the actual discovery
+mechanism, even where a specific topic is a required quality gate (HACS's
+own `hacs` topic is checked during a curated-list PR review, not searched
+at runtime — its generator reads a hand-maintained list, not GitHub
+search). Still illustrative, not decided, but now grounded: the smallest
+convention with real precedent behind it is a **topic for recall plus a
+small in-repo manifest for precision** (compatibility, version, install
+path) — closest to PlatformIO's `library.json` `frameworks`/`platforms`
+fields — with the trust/quality work every one of those eight systems
+does centrally (a curated list, an authenticated registry) instead
+deferred to per-discovery agent-level re-verification, since a
+centrally-curated list is exactly the kind of operated infrastructure
+this section's core constraint rules out. This direction still gets no
+engineering time ahead of Step 1's gate, same as everything else in this
+file. It goes on the record now so this call and the fleet-learning
+rejection can be read side by side, and so a future reader can see the
+org said no to one and yes to the other for the same reason:
 neither answer ever puts this org between a captain and the captain's own
 data.
 
