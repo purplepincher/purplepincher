@@ -1,7 +1,8 @@
 # PurplePincher
 
 **Production-ready tools for modular and distributed edge development.
-One shipped product today. Deliberately.**
+One field-tested product and eight hardened infrastructure repos today.
+Deliberately.**
 
 ---
 
@@ -17,7 +18,10 @@ hermit-crab metaphor: a soft, fast-changing thing that survives by
 carrying a hard shell. SuperInstance is the soft part. This org is the
 shell.
 
-Today the org contains one product:
+Today the org contains nine repositories that have earned the shell:
+one field-tested product and eight hardened infrastructure repos. See
+the README's *What is actually here* section for the current list and
+tier split.
 
 **[DeckBoss](https://github.com/purplepincher/deckboss)** — a
 voice-first, offline-first digital fishing logbook. Tap to record;
@@ -29,7 +33,7 @@ multi-method QA history that includes catching a bug where cloud sync
 had silently never worked. Its next milestone is not a feature — it's a
 6–8 week field beta on 3–5 working boats.
 
-One product is not a weakness to apologize for. It is the strategy.
+A small, honest catalog is not a weakness to apologize for. It is the strategy.
 
 ## The operating principles
 
@@ -107,18 +111,20 @@ references it as a sibling repo.
 
 ### Step 1 — DeckBoss field beta (the org's center of gravity)
 
-Nothing else gets significant attention until real fishermen have used
-DeckBoss on real boats. This is already planned in detail
-(`docs/FABLE_PHASE2_PLAN.md`). The industry pattern is unambiguous:
-credibility comes from one thing working in production, and a field
-beta on working vessels is this org's equivalent of production
-traffic. Forking new tools before that data exists would be expanding
-the storefront before the first product has customers.
+This step remains the org's center of gravity. The original plan gated
+significant new forks on real fishermen having used DeckBoss on real
+boats (`docs/FABLE_PHASE2_PLAN.md`). `pincher` was forked and hardened
+before that gate was reached and is now recorded as a graduated repo;
+the field beta still drives what gets serious engineering time next.
 
 ### Step 2 — `pincher` (the second tool, and the namesake)
 
-First fork after the beta is underway. Why pincher and not something
-flashier:
+**Status: done.** `pincher` has already been forked and hardened. It
+was originally gated on the DeckBoss field beta being underway, but the
+fork happened before that beta began; the record here notes the fact
+without re-litigating the timing.
+
+Why pincher and not something flashier:
 
 - **It's real.** A structured Rust project with benchmarks, a full doc
   set, and a genuinely novel architecture: embed intents locally, fire
@@ -141,6 +147,12 @@ flashier:
 
 ### Step 3 — The fleet edge tier (the first infrastructure play)
 
+**Status: partially executed.** The Vectorize-backed semantic-search
+Worker has already graduated as `plato-semantic-search`, and the Worker
+fleet-health scanner has already graduated as `vessel-tuner`. Both are
+now listed in the README's infrastructure tier; the rest of this
+cluster remains future work.
+
 The `fleet-*` cluster is 319 repos of which ~270 are chaff — but its
 core is the strongest "actually real" finding in the entire sketchbook:
 a partially **live** distributed edge system. Three Cloudflare Workers
@@ -154,7 +166,7 @@ systemd.
 The fork here is **selective**, in two pieces:
 
 - **3a. The Workers edge tier**, packaged as one coherent toolset: adopt
-  the three healthy workers, fix the three broken ones (small,
+  the remaining healthy workers, fix the three broken ones (small,
   named repairs), add monitoring, and drop the "planet-scale"
   framing for what it is — a reference deployment that a user can
   stand up on their own Cloudflare account. This aligns with DeckBoss's
@@ -190,6 +202,31 @@ pulls it in — most plausibly DeckBoss's Ask-Your-Log feature or a
 pincher integration — not because it exists. Frameworks adopted ahead
 of need are how orgs sprawl.
 
+### Graduated repos
+
+These have already earned the shell and are listed in the README's
+*What is actually here* section:
+
+- **[DeckBoss](https://github.com/purplepincher/deckboss)** — the
+  field-tested product.
+- **[pincher](https://github.com/purplepincher/pincher)** — the org's
+  namesake reflex engine.
+- **[plato-semantic-search](https://github.com/purplepincher/plato-semantic-search)** —
+  Vectorize-backed semantic search.
+- **[plato-engine-block-c](https://github.com/purplepincher/plato-engine-block-c)** —
+  embedded C runtime.
+- **[vessel-tuner](https://github.com/purplepincher/vessel-tuner)** —
+  Worker fleet-health scanner.
+- **[git-native-agents](https://github.com/purplepincher/git-native-agents)** —
+  git-primitive multi-agent coordination.
+- **[conservation-guardian](https://github.com/purplepincher/conservation-guardian)** —
+  budget-and-waste guardrail for LLM/agent workflows, on PyPI.
+- **[sonar-vision](https://github.com/purplepincher/sonar-vision)** —
+  sonar simulation, tracking, and mapping toolkit.
+
+An eighth infrastructure repo, **exocortex-mcp-ts**, is finishing
+polish and will be listed when it lands, not before.
+
 ### Watchlist — real ideas, not ready, no commitment
 
 - **`exocortex`** — distributed agent memory with an ESP32 tier. The
@@ -197,17 +234,6 @@ of need are how orgs sprawl.
   (random embeddings, sleep-and-report-random-accuracy training).
   Re-evaluate when the sketchbook versions stop being placeholders, or
   adopt architecture-only if we build memory infrastructure ourselves.
-- **`git-native-agents`** — agent coordination on pure git primitives,
-  honestly scoped to 5–50 agents. Charming, small, auditable — and
-  currently a POSIX shell script with likely race conditions and no
-  tests. A fork means a Rust/Go re-implementation; worth it only if
-  the org develops a real multi-agent operations need. (We already run
-  a multi-model build process for DeckBoss itself; this is the most
-  plausible pull.)
-- **The budget-guardian family** — token/time/build budget enforcement
-  for AI coding workflows. The most production-minded unshipped things
-  in the sketchbook, and adjacent to how this org actually builds
-  software. A candidate for a small, quick win between major steps.
 - **`ternary-pid`** — a real, tested three-state controller that would
   matter if the vessel-autonomy research (`cocapn-foundation`'s
   long-horizon scope) ever re-enters the roadmap. It is currently

@@ -122,35 +122,36 @@ Full detail, evidence, and citations: [`docs/research/deckboss-family-diff.md`](
 
 ### Step 1 — DeckBoss field beta (the org's center of gravity)
 
-Nothing else gets significant attention until real fishermen have used
-DeckBoss on real boats. This is already planned in detail
-(`docs/FABLE_PHASE2_PLAN.md`) — the beta is not a future idea, it's the next
-scheduled milestone for the org's one shipped product.
+This step remains the org's center of gravity. The original plan gated
+significant new forks on real fishermen having used DeckBoss on real
+boats; `pincher` was forked and hardened before that gate was reached
+and is now recorded as a graduated repo. The beta is still the next
+scheduled milestone for the org's field-tested product, DeckBoss.
 
-**Why this gates literally everything else.** The industry pattern this org
-is explicitly modeling itself on (see the README's Tokio/Kubernetes/
-HashiCorp references) is unambiguous: credibility comes from one thing
-working in production before a second thing is announced. A field beta on
-working vessels — not a demo, not a closed alpha, actual fishermen logging
+**Why this still matters.** The industry pattern this org is explicitly
+modeling itself on (see the README's Tokio/Kubernetes/HashiCorp
+references) is unambiguous: credibility comes from one thing working in
+production before a second thing is announced. A field beta on working
+vessels — not a demo, not a closed alpha, actual fishermen logging
 actual trips on actual boats for 6–8 weeks — is this org's equivalent of
-production traffic. Forking new tools before that data exists would be
-expanding the storefront before the first product has a single paying
-customer walk through the door. It would also be a direct violation of
-principle 2 ("one domain at a time") — announcing infrastructure work while
-the flagship's core value proposition is still unproven in the field.
+production traffic. Expanding the storefront before the flagship's core
+value proposition is proven in the field would violate principle 2
+("one domain at a time").
 
-**What "gates" means concretely:** Step 2 does not start in earnest until
-the beta is *underway* (not necessarily complete — see Step 2's framing
-below), and Steps 3 and 4 do not get serious engineering time until Step 1's
-findings have been digested and, if necessary, folded back into DeckBoss
-itself.
+**What "gates" means now:** Step 1 still drives what gets serious
+engineering time next. Steps 3 and 4 do not get serious engineering
+time until Step 1's findings have been digested and, if necessary,
+folded back into DeckBoss itself.
 
 ### Step 2 — `pincher` (the second tool, and the namesake)
 
-First fork after the beta is underway — not before, and deliberately not
-DeckBoss's flashiest or best-known cousin.
+**Status: done.** `pincher` has already been forked and hardened. The
+original plan made it the first fork after the DeckBoss field beta was
+underway; that sequencing gate was passed before the beta actually
+began. The record here notes the fork happened without re-litigating
+why.
 
-**Why pincher, specifically, earns second place:**
+**Why pincher, specifically, earned second place:**
 
 - **It's real.** A structured Rust project with benchmarks, a full doc set,
   and a genuinely novel architecture: embed intents locally, fire known
@@ -166,9 +167,8 @@ DeckBoss's flashiest or best-known cousin.
   existing product — rather than *diversify* into an unrelated second
   product line. Diversifying this early would violate principle 2.
 - **It's the identity.** The org is named after this tool's reflex engine and
-  its hermit-crab metaphor. Shipping the namesake as the second tool, once
-  the flagship has field data behind it, makes the name mean something
-  earned rather than aspirational.
+  its hermit-crab metaphor. Shipping the namesake as the second tool makes
+  the name mean something earned rather than aspirational.
 - **The gaps to close are known, finite, and small** — this is not a
   ground-up rebuild:
   1. Publish to crates.io. The sketchbook's own roadmap already claims
@@ -183,9 +183,15 @@ DeckBoss's flashiest or best-known cousin.
 
 ### Step 3 — The fleet edge tier (the first infrastructure play)
 
-This is the org's first step outside a single product and into shared
-infrastructure, which is why it comes after two products have already
-established the org's credibility and conventions.
+**Status: partially executed.** The Vectorize-backed semantic-search
+Worker has already graduated as `plato-semantic-search`, and the Worker
+fleet-health scanner has already graduated as `vessel-tuner`. Both are
+now listed in the README's infrastructure tier; the rest of this
+cluster remains future work.
+
+This is the org's first step outside the flagship product and into
+shared infrastructure. Some of its pieces graduated ahead of the
+remaining `fleet-*` work, which is why the status above is split.
 
 **Source cluster:** `fleet-*` is 319 repos, of which roughly 270 are chaff —
 92 of them alone are a separate `fleet-midi-*` music-generation sub-project,
@@ -215,17 +221,20 @@ HTTP probe:
 
 **The fork here is selective, in two pieces, not a wholesale adoption:**
 
-- **3a. The Workers edge tier**, packaged as one coherent toolset. Adopt the
-  three healthy workers as-is. Fix the three broken ones — these are small,
-  named repairs (a missing root route; two D1 binding failures), not
-  redesigns. Add monitoring so "broken" gets caught before a user finds it,
-  not after. And drop the "planet-scale" framing the sketchbook uses for
-  what is, honestly, a five-vessel home-lab fleet (one of the five offline)
-  — present it as what it actually is: a reference deployment a user can
-  stand up on their own Cloudflare account. This choice also aligns with
-  DeckBoss's existing BYO-Cloudflare-R2 sync story, so it extends a storage
-  pattern this org's users already have rather than opening an unrelated new
-  front.
+- **3a. The Workers edge tier**, packaged as one coherent toolset. The
+  Vectorize-backed semantic-search piece and the fleet-health scanner
+  have already graduated as `plato-semantic-search` and `vessel-tuner`;
+  this item now covers the remaining `fleet-*` Workers. Adopt the
+  remaining healthy workers as-is. Fix the three broken ones — these are
+  small, named repairs (a missing root route; two D1 binding failures),
+  not redesigns. Add monitoring so "broken" gets caught before a user
+  finds it, not after. And drop the "planet-scale" framing the
+  sketchbook uses for what is, honestly, a five-vessel home-lab fleet
+  (one of the five offline) — present it as what it actually is: a
+  reference deployment a user can stand up on their own Cloudflare
+  account. This choice also aligns with DeckBoss's existing
+  BYO-Cloudflare-R2 sync story, so it extends a storage pattern this
+  org's users already have rather than opening an unrelated new front.
 - **3b. The messaging protocol** (`fleet-i2i-protocol` + `fleet-protocol`),
   extracted as a versioned, standalone spec with the conservation-law
   decoration removed, published to PyPI (Python side is not currently
@@ -315,6 +324,33 @@ conflated when this step is eventually executed.
 
 ---
 
+## Graduated repos
+
+Repos that have already earned the shell and are listed in the README's
+*What is actually here* section:
+
+- **[DeckBoss](https://github.com/purplepincher/deckboss)** — the
+  field-tested product.
+- **[pincher](https://github.com/purplepincher/pincher)** — the org's
+  namesake reflex engine.
+- **[plato-semantic-search](https://github.com/purplepincher/plato-semantic-search)** —
+  Vectorize-backed semantic search.
+- **[plato-engine-block-c](https://github.com/purplepincher/plato-engine-block-c)** —
+  embedded C runtime.
+- **[vessel-tuner](https://github.com/purplepincher/vessel-tuner)** —
+  Worker fleet-health scanner.
+- **[git-native-agents](https://github.com/purplepincher/git-native-agents)** —
+  git-primitive multi-agent coordination.
+- **[conservation-guardian](https://github.com/purplepincher/conservation-guardian)** —
+  budget-and-waste guardrail for LLM/agent workflows, on PyPI.
+- **[sonar-vision](https://github.com/purplepincher/sonar-vision)** —
+  sonar simulation, tracking, and mapping toolkit.
+
+An eighth infrastructure repo, **exocortex-mcp-ts**, is finishing
+polish and will be listed when it lands, not before.
+
+---
+
 ## Watchlist — real ideas, not ready, no commitment
 
 Things worth tracking because the underlying idea is sound, but that don't
@@ -337,27 +373,6 @@ org doesn't yet have the need that would justify the fork cost.
   MCP server, 87/87 tests passing) or `exocortex-kernel-c` (real embedded C)
   instead of the Python core** — the deep-dive found these are the only
   genuinely solid artifacts in the whole 15-repo family.
-- **`git-native-agents`** — multi-agent coordination built entirely on git
-  primitives: each agent is a repo, messages are files committed to a
-  recipient's `inbox/`, memory is `memory/*.txt` plus git tags,
-  "thought branches" for speculative exploration, merge-based consensus. No
-  broker, no database, no scheduler required — git is the infrastructure.
-  Honestly scoped by its own docs to 5–50 agents before it would need to move
-  to a broker (O(N²) routing beyond that). Charming, small, auditable — and
-  currently just a POSIX shell script (`orchestrator.sh`) with likely race
-  conditions on concurrent `tick` operations and no test suite. A real fork
-  means a Rust or Go re-implementation, not a repackaging. Worth it only if
-  the org develops an actual multi-agent operations need — and notably, this
-  org already runs a multi-model build process for DeckBoss itself (kimi,
-  aider, GLM, mmx alongside Claude), which is the most plausible internal
-  pull that could justify this fork later.
-- **The budget-guardian family** — token/time/build budget enforcement for AI
-  coding workflows. Described elsewhere in the research as among the most
-  production-minded *unshipped* things anywhere in the sketchbook, and it's
-  directly adjacent to how this org actually builds software day to day. A
-  candidate for a small, quick win slotted between major roadmap steps,
-  precisely because it's low-risk and immediately useful rather than
-  speculative.
 - **`ternary-pid`** — a real, tested, CI-covered three-state (bang-bang)
   position-form PID controller with anti-windup, derivative filter,
   cascade, and feedforward support. It would matter if the vessel-autonomy
@@ -371,21 +386,6 @@ org doesn't yet have the need that would justify the fork cost.
   found real engineering gaps to fix first regardless (no `dt` parameter, no
   output clamping, non-standard cascade wiring, and a `PLUG_AND_PLAY.md`
   that documents a 3-argument API the code doesn't actually have).
-- **`vessel-tuner`** — a real, currently-live Cloudflare Worker that scans a
-  fleet of CF Workers for health/latency/size/spec/security and scores them,
-  found during a deep-dive of the remaining `vessel-*` repos
-  ([`docs/research/vessel-cluster-remaining-deep-dive.md`](./docs/research/vessel-cluster-remaining-deep-dive.md))
-  that otherwise confirmed the vessel cluster has nothing more to offer
-  `cocapn-foundation`'s technical needs (the `plato-vessel-core` +
-  `vessel-bridge` picks stand unchanged). Unlike everything else examined in
-  that pass, this one is genuinely iteratively developed (8 real commits with
-  messages like "Fix scanner — use GitHub raw as primary (CF 1042
-  workaround)") rather than a single squashed commit. Named, bounded cleanup
-  before use: fix a discarded-fallback-fetch bug, implement or delete the
-  "last 100 scans" claim, remove two other README overclaims, and
-  parameterize the hardcoded fleet list. **This is generic fleet-ops
-  tooling, not cocapn substrate** — worth tracking as a small standalone
-  utility, not folded into the cocapn work.
 
 ---
 
