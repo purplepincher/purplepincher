@@ -9,6 +9,12 @@
   door. The README states the idea completely enough to bite, then points
   the reader who wants the whole case to the essay. Rationale is in the
   first comment of docs/PARADIGM.md.
+
+  Later the same day: the agent-section bullet on unshipped direction now
+  also covers the sharing chapter ("The second boat"). The idea itself
+  lives in the essay and in ROADMAP.md, in different registers — the
+  placement reasoning is in those two files' own notes; the README stays
+  a front door.
 -->
 
 # PurplePincher
@@ -193,7 +199,12 @@ A few things stated plainly rather than left implicit:
   roadmaps that merely *mention* this org — those are proposals until they
   appear as a repo under `github.com/purplepincher`.
 - The **ESP32 / voice-to-firmware** scenario is this org's stated direction,
-  **not shipped code**. Do not cite it as an existing DeckBoss feature.
+  **not shipped code**. Do not cite it as an existing DeckBoss feature. The
+  same goes for the sharing chapter one step past it — captains publishing
+  their builds to their own GitHub for other captains' agents to discover
+  (the essay's "The second boat"; the decision-record version is in
+  [ROADMAP.md](./ROADMAP.md) under "The sharing chapter"): direction, not
+  code.
 - Claims in this README, in [docs/PARADIGM.md](./docs/PARADIGM.md), and in
   each repo's own README are meant to be literally true and independently
   checkable. If you find one that is not, that is a bug in the doc worth

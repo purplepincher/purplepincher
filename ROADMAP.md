@@ -1,3 +1,13 @@
+<!--
+  Editorial note (Fable, 2026-07-05): "The sharing chapter" section below
+  (after the watchlist) is a direction placed on record, not a roadmap
+  step. It lives in this file, and not only in docs/PARADIGM.md, because
+  its load-bearing content is a decision-record distinction — why it is
+  not the fleet learning deckboss's own ROADMAP.md rejected — and
+  distinctions between decisions belong where decisions are recorded. The
+  essay carries the same idea in its own register.
+-->
+
 # PurplePincher Roadmap
 
 This is the fuller decision record the [README](./README.md) points to. The
@@ -416,6 +426,77 @@ org doesn't yet have the need that would justify the fork cost.
   found real engineering gaps to fix first regardless (no `dt` parameter, no
   output clamping, non-standard cascade wiring, and a `PLUG_AND_PLAY.md`
   that documents a 3-argument API the code doesn't actually have).
+
+---
+
+## The sharing chapter — a direction on the record, not a step
+
+The essay ([docs/PARADIGM.md](./docs/PARADIGM.md), "The second boat")
+describes what happens one step past the ESP32 chapter: a captain and
+their agent build something new — a voice bridge into an autopilot nobody
+has bridged, a new interface on a working ESP32 program, a new
+application layered on an existing one — and the captain, by voice, with
+their own GitHub account connected, has the agent publish that work as a
+real public repository **under the captain's own account**. From then on,
+any other captain's agent asked for a similar ability has two routes:
+build it from scratch, or first search public GitHub for already-published
+work carrying tags/metadata that mark it as compatible with the
+captain's-agent stack (the `cocapn` line — the same family Step 4 tracks,
+and the design ancestor DeckBoss's own docs cite), and start from that
+instead. A second effect rides along for free: the published repo is an
+inbound path. Someone who has never heard of any of this finds a
+captain's project through ordinary GitHub browsing because it solves
+their problem, and meets the product through the work it produced.
+
+This entry exists mostly to draw one line precisely.
+
+**This is not the fleet learning DeckBoss rejected.** DeckBoss's own
+roadmap struck fleet learning deliberately — removed, not deferred —
+because "it cannot be built without a DeckBoss-operated backend
+somewhere, which breaks the core local-first promise the shipped product
+already depends on for trust" (deckboss `ROADMAP.md`, "Fleet learning:
+off the roadmap"). The load-bearing word there is *operated*. Fleet
+learning required this org to run a server that aggregates users' data;
+the moment such a server exists, "your log never touches our
+infrastructure" stops being true. The sharing chapter has no operated
+server in it anywhere. Each published project lives in the individual
+captain's own GitHub repo, under an account the captain already has,
+published by the captain's explicit choice; discovery is a public GitHub
+search that anyone can run without asking anyone's permission — the
+identical mechanism this mission's own research used to find every repo
+in this org (`gh search repos`, topics, descriptions). Nobody aggregates
+anything, and there is no PurplePincher endpoint to trust or to breach.
+The rejected idea and this one differ on exactly the axis the rejection
+named — who operates the infrastructure. There, DeckBoss would have had
+to. Here, nobody does: GitHub already exists, and the account is already
+the captain's.
+
+Worth noting, because it shows this is consistency rather than reversal:
+the fleet-learning rejection itself left the door open in exactly this
+shape — "the only acceptable shape is a separate, clearly-labeled tool
+that reads exports users chose to push to their own storage — never
+anything DeckBoss itself operates." The sharing chapter is that shape,
+applied to builds instead of log data: work a captain chose to push to
+storage the captain owns (a GitHub repo), read by tools — other captains'
+agents — that never route through anything this org runs.
+
+**What is real, stated plainly.** Nothing in this section exists. There
+is no voice-triggered repo creation, no compatibility-tagging convention,
+no agent that searches GitHub before building — and the ESP32 chapter it
+all sits on top of doesn't ship either (see the essay's own honesty
+section and the two prior-art checks under `docs/research/`). No
+mechanism beyond what is written here has been designed: how a repo
+declares compatibility, what the publish flow looks like, and what the
+agent's search actually queries are all open questions. (Illustratively —
+not decided — a GitHub topic on the repo could be the entire convention;
+topics are the same machinery this mission's 4,095-repo sweeps already
+ran on. That is a gesture at feasibility, not a design.) This direction
+gets no engineering time ahead of Step 1's gate, same as everything else
+in this file. It goes on the record now so this call and the
+fleet-learning rejection can be read side by side, and so a future reader
+can see the org said no to one and yes to the other for the same reason:
+neither answer ever puts this org between a captain and the captain's own
+data.
 
 ---
 

@@ -10,6 +10,15 @@
   fact the README establishes: DeckBoss ships today; the hardware chapter
   does not. Every paragraph here is meant to move the reader toward one
   realization. If a paragraph doesn't, it should be cut.
+
+  Second note (Fable, 2026-07-05): "The second boat" was added as a section
+  of this essay, not a README addition and not a roadmap-only entry, because
+  it is the same argument continued — the vacancy chain from "Back to the
+  crab," run forward one boat — and the next step of an argument belongs in
+  the essay making it. The concrete mechanism, and the precise reason this
+  is not the fleet-learning idea DeckBoss rejected on purpose, are stated as
+  a decision in ROADMAP.md ("The sharing chapter"), in that file's register,
+  so the two calls can be read side by side.
 -->
 
 # The partnership, in full
@@ -142,6 +151,48 @@ the agent will never have, and a collaboration that is only worth doing
 when both sides come away more capable than they went in. The crab was
 never a mascot. It was the argument.
 
+## The second boat
+
+Stay with the cabin lights one more beat, because the story so far has a
+horizon exactly one boat wide. The captain and the agent built something
+that did not exist the day before — and sometimes it will be something
+that does not exist anywhere: a voice bridge into an autopilot nobody has
+bridged, a new interface on a program that already works, a new
+application layered over an old one. Today that would be the end of the
+story. The work lives on one chip, on one boat, inside one pairing's
+shared history.
+
+The next move is one sentence long. If the captain's GitHub account is
+connected, the captain says so — *publish this* — and the agent turns the
+work into a real, public repository under the captain's own name. Not
+this org's name, not a service's: the captain's existing account, holding
+a thing the two of them made together, findable by anyone.
+
+Now watch the second boat. When another captain asks their own agent for
+a new ability, that agent has two routes instead of one. It can build
+from scratch, the way this essay has described all along. Or it can first
+search public GitHub for work some other captain has already published
+and marked — in the repo's own tags and description — as the kind of
+thing an agent like this one can pick up, and start from there. The first
+captain's afternoon of stripped wire and relay clicks becomes the second
+captain's starting point, and the two of them never meet.
+
+The discovery half needs no invention at all — it is search, topics, a
+README, the oldest machinery GitHub has. It is also, to the letter, how
+this organization was built: one agent searching public GitHub for work
+it did not make, testing which pieces were real, hardening the few that
+were. The sharing chapter does not add a new idea to the partnership; it
+hands every captain's agent the move this org is made of. And it is where
+the vacancy chain from the last section stops being a figure of speech: a
+shell one pairing has finished with, sitting in the open where the next
+one can find it.
+
+The shell on the beach faces both ways. Someone who has never heard of
+any of this — no agent, no log, no boat — finds a captain's autopilot
+bridge through ordinary GitHub search because it solves their problem,
+and discovers the partnership through the work it produced, before ever
+hearing this org's name. The repo is the introduction.
+
 ## What is real, stated without flinching
 
 This essay describes a direction, and the mission it belongs to has a
@@ -176,6 +227,18 @@ in the other direction. So, precisely:
   about a boat nobody else has read. The firmware isn't generated from a
   command. It's generated from a history. That is a narrower claim than
   "we invented voice-controlled firmware," and it is the true one.
+- **The second boat does not ship either — and it is not the fleet
+  learning DeckBoss rejected.** Voice-triggered publishing, the
+  compatibility marking, an agent that searches before it builds: none of
+  that exists today, and it sits one chapter past a chapter that also
+  doesn't ship. It is also a different animal from the fleet-learning
+  idea DeckBoss struck from its own roadmap on purpose — that idea died
+  because it required a backend this org would have to operate, and
+  nothing in the sharing chapter is operated by anyone: each repo lives
+  in an individual captain's own GitHub account, published by that
+  captain's own choice, found by public search. The full distinction,
+  stated as a decision, is in [ROADMAP.md](../ROADMAP.md) under "The
+  sharing chapter."
 - **The partnership is the thesis, not the changelog.** The value of stating
   it now, before it ships, is that it tells you what every future decision
   in this org is *for*. When a repo graduates from the sketchbook, the
