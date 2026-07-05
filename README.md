@@ -163,6 +163,11 @@ granted:
    the underlying math is real, it is presented as what it actually is.
 4. **Published** — crates.io, PyPI, or npm, under the name the README uses.
 5. **Scoped** — a stated boundary of what it will *not* do.
+6. **Two-layer intake, before any of the above is attempted**: mechanical
+   checks first (real CI, real tests, no `Admitted` Coq dressed as proven,
+   no benchmark that's a `print()` of hardcoded numbers), then published
+   multi-model adversarial review on whatever survives. Full reasoning in
+   [ROADMAP.md](./ROADMAP.md).
 
 Two decisions follow from that bar and are worth stating out loud, because
 saying no is most of the work. **One domain at a time:** DeckBoss is the

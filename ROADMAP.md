@@ -36,6 +36,29 @@ toolkit, not a pile of repos; honest scale, honest docs; ruthless scope.
 4. Published — crates.io, PyPI, or npm, under a name the README actually
    uses.
 5. Scoped — a stated boundary of what it will not do.
+6. **Two-layer intake, before any of the above is even attempted.**
+   Adopted from a strategic review of this mission's own research
+   (`docs/research/FABLE_SYNTHESIS.md`), after noticing that the one
+   trait separating the sketchbook's few genuinely real artifacts from
+   its many oversold ones was whether the author subjected the work to
+   adversarial review:
+   - **Layer one — mechanical, free, applied to everything**: does CI
+     actually compile and pass unmasked tests (not `pytest || true`);
+     count `Qed` vs `Admitted` on any raw `.v` Coq files (reject if
+     markdown-wrapped so it can't even compile); does the benchmark
+     code measure something real, or is it a `print()` of hardcoded
+     numbers? These three checks alone found ~95% of the "docs oversell
+     code" cases across this entire mission's research — apply them
+     first, before spending anything else.
+   - **Layer two — published multi-model adversarial review, only on
+     survivors**: run the shortlist that passes layer one past a small
+     panel of cheap models with an honest "what's wrong with this
+     code" prompt, and publish whatever they find in the fork's own
+     README as a condition of graduation — not buried, not softened.
+     This is cheap (the one time this mission measured it, four models
+     found two real bugs for about $0.50) and it's the practice that
+     makes `intent-directed-compilation` the strongest research
+     artifact this mission found in ~15 examined "papers" repos.
 
 ---
 
