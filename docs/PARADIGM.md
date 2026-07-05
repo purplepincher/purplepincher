@@ -158,6 +158,24 @@ in the other direction. So, precisely:
   code generation — that is the paradigm this organization is building
   toward. It is not code you can run today, and this document would be
   violating its own first principle if it let you believe otherwise.
+- **The mechanism is not the discovery.** An agent that writes, compiles,
+  and pushes real code to a cheap microcontroller already exists, today,
+  built by other people. Hobbyists have wired general-purpose coding
+  agents straight to Arduino's own build tools and watched them flash a
+  board unattended. Block editors turn a drag-and-drop program into a
+  `.uf2` file over USB. A handful of narrow tools already turn a typed
+  sentence into a real sketch. None of that is this org's idea, and this
+  document would be doing the exact thing it just promised not to do if
+  it let "an agent can write and flash firmware" pass as the novelty.
+- **What's actually new is where the request comes from.** Every version
+  of this found elsewhere treats a request as a single, self-contained
+  instruction — describe the sensor, get the sketch, nothing else has to
+  be true first. This one is different only because of what already
+  happened before the sentence was spoken: "the cabin lights" already
+  means something, established across a hundred earlier log entries
+  about a boat nobody else has read. The firmware isn't generated from a
+  command. It's generated from a history. That is a narrower claim than
+  "we invented voice-controlled firmware," and it is the true one.
 - **The partnership is the thesis, not the changelog.** The value of stating
   it now, before it ships, is that it tells you what every future decision
   in this org is *for*. When a repo graduates from the sketchbook, the
