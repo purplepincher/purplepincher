@@ -1,7 +1,7 @@
 # PurplePincher
 
 **Production-ready tools for modular and distributed edge development.
-One field-tested product and eight hardened infrastructure repos today.
+One field-tested product and ten hardened infrastructure repos today.
 Deliberately.**
 
 ---
@@ -18,8 +18,8 @@ hermit-crab metaphor: a soft, fast-changing thing that survives by
 carrying a hard shell. SuperInstance is the soft part. This org is the
 shell.
 
-Today the org contains nine repositories that have earned the shell:
-one field-tested product and eight hardened infrastructure repos. See
+Today the org contains eleven repositories that have earned the shell:
+one field-tested product and ten hardened infrastructure repos. See
 the README's *What is actually here* section for the current list and
 tier split.
 
@@ -223,9 +223,14 @@ These have already earned the shell and are listed in the README's
   budget-and-waste guardrail for LLM/agent workflows, on PyPI.
 - **[sonar-vision](https://github.com/purplepincher/sonar-vision)** —
   sonar simulation, tracking, and mapping toolkit.
-
-An eighth infrastructure repo, **exocortex-mcp-ts**, is finishing
-polish and will be listed when it lands, not before.
+- **[exocortex-mcp-ts](https://github.com/purplepincher/exocortex-mcp-ts)** —
+  zero-dependency TypeScript MCP server, 87 passing tests.
+- **[constraint-theory-core](https://github.com/purplepincher/constraint-theory-core)** —
+  zero-dependency geometric constraint-solving crate, 262 passing tests,
+  forked on its own merit.
+- **[intent-directed-compilation](https://github.com/purplepincher/intent-directed-compilation)** —
+  a real, modest AVX-512 benchmark with honest errata, paired with two
+  genuinely complete Coq proofs.
 
 ### Watchlist — real ideas, not ready, no commitment
 
