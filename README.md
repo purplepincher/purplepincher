@@ -145,8 +145,22 @@ direction at length. The parts of it that are not yet code:
   describe, in the same spoken-log voice DeckBoss already uses (*"wire this
   up to run the cabin lights"*), what a bare ESP32 should do, and have a
   system that understands the log write the firmware, push it to the chip,
-  and tell you which pin goes where. This is the direction the org is
-  building toward, not code you can install today.
+  and tell you which pin goes where.
+
+  This is where the crab metaphor cashes in. The agent holds software-writing
+  speed and a memory of the whole log that the human does not have. The human
+  holds hands that can strip a wire, eyes that can watch a relay click or smell
+  insulation starting to cook — things the agent structurally cannot do and is
+  not pretending it can. Neither is supervising the other from above. Each is
+  the other's only way into a domain it cannot enter. Like the crabs at a vacant
+  shell, the exchange only works because both come away more capable than they
+  went in: the human gets firmware written in seconds from a history no single
+  command could carry, and the agent gets a body in the physical world. That
+  mutuality — not "AI with a human safety check" — is the partnership this org
+  is building toward.
+
+  This is the direction the org is building toward, not code you can install
+  today.
 - **The sharing chapter ("the second boat").** One step past the ESP32
   chapter: a captain and their agent build something new, and the captain
   publishes it as a public repository under their own GitHub account, so
