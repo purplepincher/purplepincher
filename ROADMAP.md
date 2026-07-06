@@ -433,7 +433,12 @@ Repos that have already earned the shell and are listed in the README's
   invented for this and the next entry.
 - **[intent-directed-compilation](https://github.com/purplepincher/intent-directed-compilation)** —
   a real, modest AVX-512 benchmark with honest errata, paired with two
-  genuinely complete Coq proofs salvaged from `constraint-theory-math`.
+  Coq proofs salvaged from `constraint-theory-math` — one genuinely
+  complete (`XOR-ISOMORPHISM.v`, 8 Qed, 0 Admitted), one whose headline
+  theorem is not proven (`INTENT-HOLONOMY-DUALITY.v`, 5 Qed but 7
+  `admit.`, the source author's own 30% confidence preserved verbatim).
+  Corrected here after the org's own README repeated the "two genuinely
+  complete" claim inaccurately — caught during a fact-checking pass.
 
 ---
 
