@@ -193,6 +193,21 @@ checklist (`docs/CRATES_IO_READINESS.md` in the `pincher` repo) is
 already done. This is currently the single cheapest high-value action
 available to the owner anywhere in this org.
 
+One more item this step's own "done" status previously glossed over:
+the original plan called for "replace the philosophy-heavy README with
+a 60-second demo." That did not fully happen — the crates.io claim was
+corrected, the SuperInstance-sketchbook links and the design-system
+section were removed (real work, genuinely done), but the README's
+opening still carries the hermit-crab/"cortex teaches the spinal cord"
+framing, including the exact "that's not cache, that's understanding"
+line. Decision, on the record rather than left as a silent gap: **the
+philosophy stays, deliberately.** It's original writing specific to
+this crate (not sketchbook material), it doesn't make any unverifiable
+claim, and a rewrite would spend real effort for a stylistic
+preference rather than an honesty problem — unlike the crates.io gap
+above, this isn't blocking anything. Revisit only if a future reader
+finds it actually gets in the way of understanding what pincher does.
+
 **Why pincher, specifically, earned second place:**
 
 - **It's real.** A structured Rust project with benchmarks, a full doc set,
