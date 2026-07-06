@@ -75,7 +75,7 @@ met a user in the field, which is why they sit a tier below DeckBoss.
   `cargo install pincher` does not work yet.
 - **[plato-semantic-search](https://github.com/purplepincher/plato-semantic-search)**
   — a Cloudflare Worker doing Vectorize-backed semantic search. Deployed,
-  67 passing tests.
+  74 passing tests.
 - **[plato-engine-block-c](https://github.com/purplepincher/plato-engine-block-c)**
   — a ~2 kLOC C99 runtime for a sensor/actuator/alarm "room": single-header
   core, a `poll()`-based TCP server, a real fix to its wire protocol, 35
@@ -88,7 +88,8 @@ met a user in the field, which is why they sit a tier below DeckBoss.
 - **[git-native-agents](https://github.com/purplepincher/git-native-agents)**
   — multi-agent coordination built entirely on git primitives: each agent a
   repo, each message a committed file, no broker or database. Hardened past
-  a real concurrency bug that failed 92% of the time under load.
+  a real `.git/index.lock` race under concurrent operations, now covered by
+  a dedicated concurrency test suite.
 - **[conservation-guardian](https://github.com/purplepincher/conservation-guardian)**
   — a budget-and-waste guardrail for LLM/agent workflows (per-node cost
   limits, overprompt and dead-branch detection). Published on PyPI;
