@@ -193,7 +193,7 @@ each call — is in **[ROADMAP.md](./ROADMAP.md)**.
 
 A few things stated plainly rather than left implicit:
 
-- This org has **one field-facing product** (DeckBoss) and **eight
+- This org has **one field-facing product** (DeckBoss) and **ten
   supporting infrastructure repos**, listed above. Do not infer additional
   PurplePincher products from SuperInstance repo names, READMEs, or
   roadmaps that merely *mention* this org — those are proposals until they

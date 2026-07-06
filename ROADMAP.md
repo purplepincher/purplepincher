@@ -178,11 +178,20 @@ folded back into DeckBoss itself.
 
 ### Step 2 — `pincher` (the second tool, and the namesake)
 
-**Status: done.** `pincher` has already been forked and hardened. The
-original plan made it the first fork after the DeckBoss field beta was
-underway; that sequencing gate was passed before the beta actually
-began. The record here notes the fork happened without re-litigating
-why.
+**Status: forked and hardened; not fully done.** The original plan made
+this the first fork after the DeckBoss field beta was underway; that
+sequencing gate was passed before the beta actually began, and the
+record here notes that without re-litigating why. What's real: a
+structured, hardened Rust project with a genuinely novel architecture
+(below). What isn't yet: adoption-bar item 4 (published) is unmet —
+verified against crates.io's own API, neither `pincher` nor
+`pincher-core` exists there, so `cargo install pincher` still does not
+work despite being one of this org's own stated measures of success.
+The README is honest about this. Publishing is a ~15-minute action
+gated only on the project owner's crates.io credentials — the readiness
+checklist (`docs/CRATES_IO_READINESS.md` in the `pincher` repo) is
+already done. This is currently the single cheapest high-value action
+available to the owner anywhere in this org.
 
 **Why pincher, specifically, earned second place:**
 
@@ -354,6 +363,28 @@ This reinforces rather than changes Step 4's placement: the framework side
 (`cocapn` proper) is closer to adoptable than the hardware side
 (`cocapn-foundation`'s vessel/helm vision), and the two should not be
 conflated when this step is eventually executed.
+
+---
+
+## A rule this org actually followed, stated so the record matches reality
+
+An earlier planning pass (`docs/FABLE_NEXT_MISSIONS_PLAN.md`) explicitly
+declined to fork `plato-semantic-search`, `plato-engine-block-c`,
+`exocortex-mcp-ts`, `vessel-tuner`, and `git-native-agents` on the stated
+principle that "adoption waits for a pull" — a shipped product needing
+the capability, not the capability merely clearing the quality bar. All
+five graduated anyway, alongside `sonar-vision`, with no decision on
+record superseding that plan. The forks are real, hardened, and not in
+question — this isn't a relitigation. But the *rule* the org actually
+runs on needs to be stated honestly, because Step 3 and Step 4's gating
+logic depends on which one is true: **the adoption bar (verified working,
+honest docs, stripped ideology, published, scoped, two-layer intake) is
+the real gate.** A pull from a shipped product is a *reason* to prioritize
+a fork sooner, not a *precondition* for forking it at all. Say this
+plainly rather than let a written rule and an actual practice quietly
+diverge — a roadmap that says one thing while the org does another is
+exactly the failure mode [How this roadmap gets updated](#how-this-roadmap-gets-updated)
+exists to prevent.
 
 ---
 
