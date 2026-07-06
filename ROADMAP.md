@@ -549,6 +549,30 @@ data.
 
 ---
 
+## The cluster-survey program is closed
+
+Every major naming family in the SuperInstance account has now had a
+real, code-level examination: `fleet-*`, `ternary-*`/conservation,
+`lau-*`, `plato-*`, `cuda-*`/`oxide-*`, the full `cocapn-*` family,
+`nexus-*`, `edge-*`, `vessel-*`, `deckboss-*`, `git-native-agents`,
+`budget-guardian`, `openconstruct`, dev-tooling, `flux-*`, `agent-*`,
+`constraint-*`, `si-*`, `crdt-*`, and — the last two, closing the
+program — `superinstance-*` (the account's own namesake family, 29
+repos, no fork candidate found) and `grand-*` (42 repos, no fork
+candidate found). The hit rate collapsed well before these last two:
+recent surveys of 600+ repos each found 2–3 candidates apiece, most of
+which the org correctly declined to fork because nothing shipped pulled
+them in. **No further cluster surveys are planned.** The account's
+naming-family survey is complete; anything not already found is chaff
+by a filter with a measured track record, bounded by one escape hatch —
+a filter-failing repo gets reconsidered only if a verified Tier-A repo
+already in this org references or depends on it. The differentiating
+asset this whole program produced was never any single fork; it's the
+audit method itself, now standing policy (adoption-bar item 6). Future
+energy goes to the org's own products, not more of the sketchbook.
+
+---
+
 ## What we will not fork, and why
 
 Saying no is most of the job. This section exists because it's the part a
