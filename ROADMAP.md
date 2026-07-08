@@ -151,6 +151,16 @@ code, while DeckBoss's README is unusually calibrated the other direction.
    generator) for a future Helm/Jetson hardware line, just not applicable to
    today's software-only PWA.
 
+**All four executed, 2026-07-08.** Item 1 was already done in an earlier
+pass (`purplepincher/deckboss/docs/cocapn-foundation-mirror/` contains
+`SAFETY.md`, `activelog-spec/`, and its own `README.md`). Items 2–4 were
+decided here but left unexecuted until now: all five repos in item 2 are
+archived (verified via the GitHub API, `archived: true` on each); the
+disambiguation line from item 3 is live on both `deckboss-ai` and
+`DeckBoss`'s repo descriptions; the three hardware repos carry the
+"[Hardware roadmap, not active product]" prefix from item 4. Step 0 has
+no remaining open items.
+
 Full detail, evidence, and citations: [`docs/research/deckboss-family-diff.md`](./docs/research/deckboss-family-diff.md).
 
 ### Step 1 — DeckBoss field beta (the org's center of gravity)
