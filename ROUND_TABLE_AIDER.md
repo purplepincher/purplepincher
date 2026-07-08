@@ -51,7 +51,7 @@ Using `gh api repos/purplepincher/<repo>/actions/runs` (the `/commits/.../status
 
 Nothing in the *code* is stuck. The outstanding items are all **human‑owner decisions**:
 
-- **Crateredo credentials** — the single cheapest high‑value action available (ROADMAP.md explicitly calls this out).
+- **Crates.io credentials** — the single cheapest high‑value action available (ROADMAP.md explicitly calls this out).
 - **Real‑world beta recruitment** — the org cannot manufacture fishermen. Someone has to be physically in the loop.
 - **The cocapn naming puzzle** — three repos all claim the same package on PyPI. Resolving that requires a judgement call about which one is canonical; an agent shouldn’t make that call unilaterally.
 - **Archiving/relabelling of Sketchbook repos** — Step 0 identifies specific repos for archival or relabelling; those are irreversible organisation‑wide changes that belong to the account owner.
