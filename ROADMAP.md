@@ -509,6 +509,67 @@ exists to prevent.
 
 ---
 
+## Step 5 — ActiveLog: one shared core, then skins (added 2026-07-08)
+
+**Status: not started; deliberately sequenced.** Casey laid out a real,
+large vision: a shared voice-capture-and-storage core — pick a storage
+location (local folder, the user's own Cloudflare account, Google
+Drive, a database, an Oracle instance), activate the mic, dictate into
+a structured log, organize it via pause/wake-word detection, add a
+wake-word chatbot panel (BYOK across Ollama/DeepSeek/OpenAI/OpenRouter/
+DeepInfra, plus a small free allowance on a cheap model), optionally
+add an I/O panel for hardware (ESP32 autopilot, camera feeds) — white-
+labeled across nine domains: `activelog.ai` (the embeddable core
+itself), `personallog.ai` (personal assistant framing), `businesslog.ai`
+(teams, spreadsheets, financial paper trails), `activeledger.ai` (pure
+finance/trading), `fishinglog.ai`/`cocapn.ai`/`cocapn.com` (hardware
+control, vessel voice backbone), `deckboss.ai`/`deckboss.net`
+(the existing flagship), plus a `capitaine.ai` skin pairing the log with
+OpenCPN-style chart visualization — draw a line on a chart from a
+timestamped, GPS-tagged voice note, using vessel-specific vocabulary the
+captain taught the assistant (e.g., "dropped the gear in" meaning "set
+the net," for a gillnetter).
+
+**Why this doesn't start as a nine-domain build.** This is exactly the
+shape of expansion principle 2 ("one domain at a time") and principle 3
+("one toolkit, not a pile of repos") exist to prevent, and it's exactly
+the kind of work Step 1's own gate (above) says shouldn't get serious
+engineering time until the DeckBoss field beta has real findings — zero
+captains have used the flagship product yet. Given the choice, on
+2026-07-08, between overriding that gate, holding this entirely until
+the gate opens, or something in between, the call made was: **build one
+real reference implementation of the shared core on `activelog.ai`
+itself first — not nine simultaneous builds.** This isn't a workaround
+for the gate; it's principle 3 taken seriously. A "pile of repos" failure
+here would look like nine shallow, half-working skins instead of one
+real toolkit — the identical failure mode the roadmap's own "what we
+will not fork" section catalogs at length elsewhere in the sketchbook
+this org hardens against.
+
+**What "real" means for the reference implementation**, so this doesn't
+quietly become another overclaiming page: every capability shown must
+actually work when a stranger visits `activelog.ai` — the storage-picker
+flow must actually persist somewhere real (a local folder via the File
+System Access API, or a real linked Cloudflare/Drive/DB account), the
+mic-to-markdown path must actually transcribe and actually write, and
+the BYOK chat panel must actually call the key a user actually enters.
+Anything described in the original vision that isn't buildable to that
+bar yet — ESP32 code-generation-and-upload, the free-tier metering on a
+cheap model, ESP32/autopilot I/O panels, the `capitaine.ai` chart-drawing
+skin's vessel-vocabulary training — is a later phase, not a "coming
+soon" label on day one. A phased build plan and the specific first-slice
+scope is being drafted (Fable synthesis, in progress as of this entry)
+and will supersede this paragraph once it lands.
+
+**Skinning gate.** The eight domain-specific skins do not start until
+the `activelog.ai` core is real by the bar above, verified the same way
+Step 1 verifies DeckBoss — not "has a demo," works, exercised through
+its real use case. This mirrors Step 1's own gate structure deliberately:
+a step doesn't count as passed because it was announced, it counts
+because someone outside the org who built it could actually use it.
+
+---
+
 ## Graduated repos
 
 Repos that have already earned the shell and are listed in the README's
