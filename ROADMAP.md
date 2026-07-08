@@ -176,6 +176,72 @@ engineering time next. Steps 3 and 4 do not get serious engineering
 time until Step 1's findings have been digested and, if necessary,
 folded back into DeckBoss itself.
 
+**What "the gate opened" actually means (added 2026-07-08).** Three
+independent reviewers (aider, mmx/MiniMax, and a Fable synthesis pass)
+converged on the same gap in this step: the roadmap treats gate
+digestion as something that happens *to* the org while infrastructure
+waits, but never defines what passing looks like. "Findings have been
+digested" is not checkable as written. This section makes it checkable.
+The numeric thresholds below are stated judgment calls, not derived
+facts — no evidence exists yet about how Sitka captains respond to
+outreach, because zero have been contacted. They are set here so the
+gate has a definition that reality can correct, rather than no
+definition at all; if the beta's actual numbers argue for different
+thresholds, update this section with the evidence, per
+[How this roadmap gets updated](#how-this-roadmap-gets-updated).
+
+The gate has three stages, each independently checkable:
+
+1. **Recruited.** At least 3 working boats committed (the floor of this
+   file's own "3–5 real boats" measure of success), of which at least 2
+   are not the project owner's own vessel. F/V Eileen counts as a boat;
+   it cannot count as the signal. A founder using his own product
+   proves willingness, not adoption — the beta exists to test whether
+   the voice-first bet lands with captains who have no stake in it
+   being true. Each ask gets logged (name, date, channel) the day it's
+   sent; the fallback clock below runs off that log.
+2. **The beta produced signal.** After the 6–8 week window (or earlier,
+   if it fails early — a failure is also signal), measured only through
+   channels that keep the no-backend promise intact (daily check-in
+   notes, the on-device diagnostics export, and the captain's own
+   storage as witness — no telemetry exists and none gets added for
+   this): retention (at least 2 non-owner captains still logging
+   unprompted in the final two weeks), capture-in-conditions (each
+   active captain has at least 5 entries recorded in genuinely loud or
+   wet conditions, since that's the product's core hypothesis), a
+   completed week-one parallel-log ground-truth comparison per captain,
+   and verified sync to storage each captain owns.
+3. **Digested.** One findings document, committed to
+   `purplepincher/deckboss/docs/field-beta-findings.md`, answering
+   three named questions with evidence: does voice capture survive real
+   deck conditions; does sync-to-own-storage work unattended for people
+   who didn't build it; do captains come back unprompted after the
+   novelty wears off. The gate is open on the day that document lands
+   **and** a dated decision note re-prioritizing Steps 3 and 4 is added
+   here in light of it. Not before.
+
+**A negative result opens the gate too — differently.** If captains are
+recruited, onboarded, and then stop using it for reasons intrinsic to
+voice capture (hands wet, won't talk to a phone mid-haul, transcript
+not trusted) rather than fixable bugs, that is a real answer to the
+question the beta asked. It gets written up in the same findings
+document, and what it unblocks is a reconsideration of the voice-first
+bet — not Steps 3 and 4, which exist to serve a product whose thesis
+would then be in question. Distinguish this carefully from recruiting
+failure, which is a channel-and-message problem and says nothing about
+the product.
+
+**The fallback clock**, so outreach going quiet is a scheduled decision
+instead of an indefinite stall: at **T+14 days** from the first send,
+fewer than 2 replies from roughly 10 direct asks means switch channel,
+not just message — the written drafts become the leave-behind, and the
+primary channel becomes the in-person dock conversation. At **T+45
+days**, fewer than 3 committed boats means run the beta at reduced
+scope with whoever committed (F/V Eileen included) rather than letting
+the gate block the org indefinitely — record the downgrade here, dated,
+and the findings document must say plainly that the signal is weaker
+for it.
+
 ### Step 2 — `pincher` (the second tool, and the namesake)
 
 **Status: forked and hardened; not fully done.** The original plan made
@@ -192,6 +258,17 @@ gated only on the project owner's crates.io credentials — the readiness
 checklist (`docs/CRATES_IO_READINESS.md` in the `pincher` repo) is
 already done. This is currently the single cheapest high-value action
 available to the owner anywhere in this org.
+
+**Confirmed for real, 2026-07-08**, not just claimed: the readiness
+checklist's earlier gaps (a `cargo fmt` failure, an unresolved
+`pincher-cli`-vs-`pincher` package-naming question, and a dry-run
+publish that had never actually been runnable) are now closed — a
+toolchain became available, `cargo fmt` was fixed, the CLI package was
+renamed to `pincher` to match the README's own `cargo install pincher`
+claim, and `cargo publish --dry-run` passes on both publishable crates
+(commit `e84b13a`, CI green). See `docs/FINISH_THIS_PHASE.md` for the
+exact remaining commands — there is nothing else blocking this but
+Casey running them.
 
 One more item this step's own "done" status previously glossed over:
 the original plan called for "replace the philosophy-heavy README with
@@ -336,9 +413,28 @@ it looked.** A full 77-repo family deep-dive
 found the PyPI-published `cocapn` 0.3.0 **does not actually match**
 `SuperInstance/cocapn`'s source, and **three separate repos**
 (`cocapn`, `cocapn-py`, `cocapn-python`) all claim the same package name.
-This has to be resolved — deciding which repo actually owns the `cocapn`
-name — before anything else in this step, not treated as one gap among
-several. The other gaps still stand: publish the CLI the docs already
+This has to be resolved before anything else in this step, not treated
+as one gap among several — but the resolution isn't "pick which of the
+three repos owns the name." A follow-up tarball audit
+([`docs/research/cocapn-pypi-tarball-audit.md`](./docs/research/cocapn-pypi-tarball-audit.md),
+2026-07-06) downloaded the actual published 0.3.0 sdist and compared it
+directly against all three repos: it matches **none of them** — no
+file-hash, class-name, or dependency overlap, and the published
+tarball's own changelog cites commits that don't exist in any of the
+three. The published package is orphaned, not owned by a knowable
+source repo — the audit's own §7 notes the live artifact may come from
+a source outside all three named repos entirely. The decision this step
+is actually gated on starts with a different first question than "which
+repo owns the name": who currently holds the PyPI upload credentials
+for the `cocapn` project (checkable via PyPI's own collaborator
+management), since that fact controls what happens next independent of
+which repo is "morally" the source. The audit's §7 lays out the
+standard resolution paths once that's known — consolidate under one
+repo, transfer ownership via PyPI, or, if no maintainer can be
+identified, ask PyPI support to mediate a dormant-project name dispute. This correction folds the audit's finding
+forward per this document's own rule that new investigation results get
+folded in rather than left stale next to a newer, disagreeing note. The
+other gaps still stand: publish the CLI the docs already
 reference but that doesn't yet exist (and note `cocapn-cli` on crates.io
 is a theming library, not the referenced CLI, per the same deep-dive);
 split the sprawling repo family into a documented core plus optional

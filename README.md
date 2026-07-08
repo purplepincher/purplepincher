@@ -207,6 +207,9 @@ A few things stated plainly rather than left implicit:
   can go stale.
 - **[GRADUATION_CHECKLIST.md](./GRADUATION_CHECKLIST.md)** — the adoption
   bar translated into a concrete check procedure.
+- **[docs/FINISH_THIS_PHASE.md](./docs/FINISH_THIS_PHASE.md)** — the
+  current phase's remaining punch list, operator-executable, no roadmap
+  re-read required.
 
 *Ideas start soft, at [SuperInstance](https://github.com/SuperInstance).
 A few of them harden here.*
