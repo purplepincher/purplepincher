@@ -7,6 +7,15 @@ in [`ROADMAP.md`](../ROADMAP.md) §"Step 5 — ActiveLog: one shared core, then
 skins." A parallel effort is drafting `docs/ACTIVELOG_FIRST_SLICE.md` (the
 first buildable slice); this document is the architecture, not the slice plan.
 
+*Addendum (2026-07-08, branch `activelog-architecture-addendum-2026-07-08`):
+the sections above are reviewed and unchanged. This branch adds four
+subsections that fold in design conversations held after the original draft —
+§4's "Chrome's on-device Prompt API" accelerator; §5's "Gemini — a sixth
+OpenAI-compatible endpoint" and "The on-device escape hatch" for the
+free-allowance tension; and a new §5.5 "The connector-dispatcher paradigm"
+that generalizes the §5 BYOK provider into a named-connector primitive. All
+new claims carry the same ✅/⚠️/🔮 honesty markers as the rest of the doc.*
+
 **The one-line scope, restated so this can't drift into nine shallow skins:**
 build ONE real reference implementation of a voice-capture-and-storage core on
 `activelog.ai`, real enough that a stranger who arrives with no setup can tap a
@@ -430,6 +439,56 @@ that starts as exact-match (Tier B) and can later host an embedder (Tier C)
 behind the same interface — mirroring pincher's own seam design where the
 hash-fallback and the ONNX path sit behind one `Embedder` trait.
 
+### Chrome's on-device Prompt API — an optional accelerator for Tier C (and only when present)
+
+Tier C's embedder is a 🔮 later-phase item because of its model-download/WASM
+cost (above). There is a second path to a *local* semantic classifier that is
+free in a different sense — free of network and free of cost to the org — but
+only on the one browser that ships it: **Chrome's on-device Prompt API (Gemini
+Nano)**, reached through Chrome's built-in AI runtime. ⚠️ **Real but
+conditional:** as of 2026-07-08 this API is Chromium-only (Chrome/Edge desktop),
+origin-trial / flag-gated, requires the browser to have downloaded the on-device
+model once, and is explicitly *not* present in Safari, Firefox, or mobile Chrome
+in the same form. **Verify the current enablement surface** (origin-trial token
+vs. `chrome://flags` vs. general availability) and the exact JS entry point
+against Chrome's live built-in-AI docs before wiring — the gating mechanism has
+shifted across Chrome versions and must not be assumed from memory. (The
+org's own research already encountered this surface in
+`docs/research/cocapn-family-deep-dive.md`, "Chrome's built-in Gemini Nano
+Prompt API with cloud fallbacks.")
+
+Where it **is** present, it is a strictly better Tier C implementation option
+than a downloaded WASM embedder for one job: **wake/intent classification** —
+"is this utterance addressed to the log, and to which connector" — decided by a
+model that runs on-device, with zero network round-trip and zero cost to the
+org. This does **not** replace Tier A/B and does not make Tier C mandatory: the
+architecture is *prompt-capable-when-present, exact-match-when-not*.
+`matchWakePhrase` (the single seam §4 already defines) gains a third branch —
+"if an on-device language model is available, ask it to classify intent;
+otherwise fall back to Tier B exact-match (Tier A segmentation runs regardless)"
+— behind the same interface, so a Safari or Firefox user never sees a broken
+feature, only the Tier B behavior that was always the day-one floor. This is the
+same seam discipline pincher uses, where the hash-fallback covers the no-model
+case and the ONNX path is an upgrade behind one `Embedder` trait, never a
+precondition. It is also the local-classifier input to the connector-routing
+decision in §5.5, which is why it appears here rather than only under chat.
+
+**The caveat that matters most, stated so a reader cannot conflate it:**
+"Chrome AI" is not one uniformly-local thing. The Prompt API above runs
+**on-device**. Chrome's **default `SpeechRecognition`** — which is §3's Web
+Speech default transcription engine — does **not**: it ships audio to a
+Google server-side recognizer (§3 quotes MDN on this directly, and DeckBoss
+shipped `hadNetworkError` precisely because that network path fails). These two
+Chrome-shipped AI surfaces have **opposite privacy properties**, and the page
+must never let "Chrome has on-device AI" imply that the default voice-capture
+path is private by default. Concretely: routing wake-classification through the
+on-device Prompt API keeps that classification local; routing *transcription*
+through Web Speech does not, on Chrome, until a user opts into a genuinely
+on-device recognition path (§3's `processLocally` / `on-device-speech-recognition`
+direction, still not a reliable cross-browser default). The two must be
+presented as separate choices with separate privacy footprints, never as one
+"Chrome AI" toggle.
+
 ### What is explicitly not claimed
 
 - **True always-on keyword spotting (KWS)** — the kind that listens
@@ -469,9 +528,9 @@ PurplePincher proxy in the BYOK path. This is the same property, restated for a
 second credential type, and it is what makes "BYOK" a real claim rather than a
 label.
 
-### Provider routing — one OpenAI-compatible shape, five endpoints
+### Provider routing — one OpenAI-compatible shape, six endpoints
 
-Five of the named providers expose an OpenAI-compatible `/v1/chat/completions`
+Six of the named providers expose an OpenAI-compatible `/v1/chat/completions`
 shape with a `Bearer` key, so a single client covers them:
 
 | Provider | Base URL | Notes |
@@ -480,6 +539,7 @@ shape with a `Bearer` key, so a single client covers them:
 | DeepSeek | `https://api.deepseek.com` (or `/anthropic`) | `deepseek-v4-flash` |
 | OpenRouter | `https://openrouter.ai/api/v1` | aggregates many models behind one key |
 | DeepInfra | `https://api.deepinfra.com/v1/openai` | OpenAI-compatible |
+| Gemini | `https://generativelanguage.googleapis.com/v1beta/openai` | Google's OpenAI-compatible shim; ⚠️ see below |
 | Ollama (local) | `http://localhost:11434/v1` | see ⚠️ below |
 
 **⚠️ Local Ollama has a real setup gotcha the UI must surface.** An
@@ -492,6 +552,60 @@ panel must say it plainly, and the "test connection" button must report the
 real PNA/CORS error rather than a generic "failed." (This is the same class of
 honest-error-handling discipline DeckBoss applied to `WhisperNetworkError` vs.
 `WhisperApiError` — distinguish "couldn't reach it" from "it rejected us.")
+
+### Gemini — a sixth OpenAI-compatible endpoint, not a sixth client shape
+
+The design call on Gemini is to **route it through Google's own
+OpenAI-compatible endpoint** (table row above), so it stays a sixth row in the
+same single client rather than introducing a sixth client shape. The reason is
+the same reason the other five collapse to one client: Google documents its
+`/v1beta/openai/` shim to accept the OpenAI `chat/completions` request body and
+`Bearer` key, so the existing BYOK `fetch()` path (`baseUrl` + `apiKey` + `model`
+from `AppConfig`) covers Gemini with zero new code — only a new row in the
+provider picker. This is strictly cheaper than a bespoke Gemini client and keeps
+the "one shape, many endpoints" property true — which is what lets §8's
+acceptance item 3 ("actually calls the key a user enters, against at least one
+of {…}") extend to Gemini via the same machinery, rather than needing a second
+test path. ⚠️ **Verify before wiring:** the exact base path
+(`/v1beta/openai`), the current model id (e.g. `gemini-2.x-flash`-class), and
+whether the OpenAI shim enforces the same `Bearer` auth as the native API all
+evolve on Google's side and were not re-checkable against Google's live docs
+from the environment this entry was written in — confirm them against
+`ai.google.dev/gemini-api/docs/openai` at wire-up time, and have the "test
+connection" button report the real `401`/`404` rather than a generic "failed"
+(the same discipline as the Ollama note above).
+
+**One real, checkable property that is architecturally different from every
+other row in the table — verify, then decide.** Gemini's **native** API (the
+`generateContent` shape, *not* the OpenAI shim) accepts **audio as a first-class
+input modality** (`inlineData`/File-API audio parts): a single call can take raw
+audio and do transcription *and* understanding together. Every other provider in
+the table is text-in/text-out and therefore requires the §3 two-step
+(STT → LLM) for voice→chat. If that property holds for the model a user selects,
+Gemini is the one provider where §3's pipeline could take an **alternative
+single-call path** — send the recorded `Blob` straight to Gemini with a prompt,
+skip the separate Web Speech/Whisper transcription hop — **as an opt-in,
+Gemini-only path, never as a replacement for the Web Speech default.** Two
+honesty constraints on this, because the implication is large:
+
+- It is reachable only through Gemini's **native multimodal API**, which is a
+  *different* client shape from the OpenAI-compat shim the table row uses — so
+  it is a second, provider-specific code path, not free with the row above.
+  Whether the OpenAI shim passes audio input parts through identically should be
+  confirmed, not assumed; if it does not, the single-call audio path needs the
+  native client.
+- It does **not** change §3's day-one default. Web Speech remains the
+  zero-setup transcription engine; the Gemini single-call audio path is a
+  quality/latency upgrade a BYOK-with-Gemini user can opt into, exactly as
+  Whisper is an opt-in quality upgrade over Web Speech. The §3 honesty rule
+  ("never claim offline transcription on the landing page until the user turns
+  it on") applies unchanged: this is network-to-Google, not local.
+
+🔮 **Phase 2**, not day one — both because it is provider-specific and because
+the single-call path needs its own provenance handling in the log (the
+`chat.exchange` event's `model` field would name a Gemini audio-capable model,
+and the user should see that their audio went to Google, not to a local
+transcriber).
 
 ### The free-allowance problem — the one real tension with the org's principles
 
@@ -551,6 +665,43 @@ difference between a demo and a bill. (The model id `deepseek-chat` is being
 deprecated 2026-07-24 in favor of `deepseek-v4-flash`, per the same page —
 cite the live name, not the legacy one.)
 
+### The on-device escape hatch — a zero-cost default, for Chrome users only
+
+There is a third option that dissolves the free-allowance tension *for one
+browser* without touching either of the two above, and it deserves to be named
+so it isn't conflated with them. Chrome's on-device Prompt API (Gemini Nano —
+the same surface §4 routes Tier C wake-classification through, ⚠️ Chromium-only
+and conditional as detailed there) can, **when present**, also serve as a
+zero-cost default chat backend: the model runs in the user's browser, so the
+turn costs the org literally nothing, and there is no org-operated endpoint in
+the path at all. This is categorically separate from both the BYOK-provider
+question (no user key is involved — the model is browser-provided) and the
+hosted-allowance question (no proxy, no cap, no bill, no `fleet-learning`-shaped
+operated backend to defend). For a Chrome-desktop visitor who has the model
+downloaded, "just talk to the log, no setup" can be true on day one without any
+of the §5 constraints firing.
+
+This is a ⚠️ **conditional accelerator, not a strategy**: it is absent on
+Safari, Firefox, and mobile Chrome, so it cannot be the *only* free path, and
+the free-allowance decision above still has to be made for everyone else. It is
+also **provenance-honest by construction** (not a marker, a requirement): a
+chat turn answered by the on-device model must still record a `chat.exchange`
+event with `model` set to the on-device model id and `key_owner` set to
+something like `"on-device"` (not `"byok"` and not `"org"`) — the log must not
+imply an org-operated model served the turn when the user's own machine did. And the §4 caveat applies here unchanged and bears
+repeating in this context: **the on-device Prompt API is local; Chrome's default
+`SpeechRecognition` is not.** "Talk to the log with no setup" must not be
+allowed to imply that the *dictation* path is private by default on Chrome —
+the chat-backend can be on-device while the voice-capture still leaves the
+device, and the UI has to say which is which (§3, §4). The two are independent
+toggles, never one "Chrome AI" switch.
+
+🔮 **Phase 2 for the chat-backend wiring** (Tier C's model-presence check is the
+prerequisite, and §5.5's connector abstraction is the natural place for an
+on-device model to register as a zero-cost connector); day one remains BYOK-only
+per item 1 above, with this noted as the honest reason a Chrome user's
+"free chat" need not wait for the hosted allowance to be built.
+
 ### Chat provenance in the log — reuse the spec's event
 
 Every chat turn the user exchanges should be recorded as an `activelog-spec`
@@ -559,6 +710,178 @@ the log is honest about which model said what and that the user's own key paid
 for it (`deckboss-ref/docs/cocapn-foundation-mirror/activelog-spec/README.md`,
 event-type table). This is a one-field honesty invariant: a chat reply in the
 log always carries its `model` and `key_owner`, never an anonymous string.
+
+---
+
+## 5.5 The connector-dispatcher paradigm — generalizing the BYOK provider into a named-connector primitive
+
+The BYOK chat providers in §5 are, on reflection, the simplest case of a
+broader pattern Casey wants the core to embody: a voice-first surface that can
+address *anything reachable* by name and get a result back, with the same
+interaction shape regardless of what is on the other end. His words, verbatim,
+on the target experience:
+
+> "I could say, 'cocapn, put together a series of prompts for claude code on
+> my oracle instance, you have the ssh to the oracle instance in your
+> connectors. I want to see an overview of your prompts before you send them'
+> or 'cocapn, tell my laptop's hermes to begin research on tomorrow's project
+> scope.' ... we become the ship's computer ... the audio frontend that can
+> project a window with a dashboard of anything from markdowns of transcripts
+> to controls created for controlling intuitively for whatever the application
+> of the room they are in."
+
+And his own scoping refinement, which is the load-bearing constraint for the
+security model below:
+
+> "the web-based version doesn't have to have the higher-risk connectors like
+> an ssh to an oracle. but the paradigm that a log can reach out to anything
+> that will connect to and treat it all the same from a voice-first UI/UX."
+
+This subsection writes that up as an architectural pattern, not a feature list,
+and marks every piece for which phase it is actually real in. **The entire
+generalized paradigm is 🔮 later-phase for the reference core** — day one ships
+only the one connector instantiation that is already ✅ real: the §5 BYOK chat
+provider. The pattern is named here so the day-one chat panel is built *as* the
+first connector rather than as a special case that later has to be untangled.
+
+### A general "named connector" abstraction
+
+Generalize §5's provider into a primitive:
+
+> **A connector is anything wake-word-addressable that can receive a request
+> and optionally return a result.** A chat model (§5), a remote agent over SSH,
+> a hardware bridge, a research task queued on another machine — all are
+> connectors. The voice-first interaction is identical regardless of what is on
+> the other end: a wake/intent classifier (§4 Tier B exact-match today, Tier C
+> embedder / on-device Prompt API later) decides *which* connector an utterance
+> is addressed to, the dispatcher hands it a request, and any result is rendered
+> back into the same surface that shows transcripts and chat.
+
+The §5 BYOK chat provider is `connector("chat", invoke=openaiCompatFetch,
+returns=text)` — the simplest shape (one request in, one text blob out, no side
+effects outside the conversation). Adding "tell my laptop's hermes to begin
+research" is `connector("hermes", invoke=sshOrLocalBrokerDispatch,
+returns=taskHandle)` under the *same* dispatch seam, not a parallel feature
+tree. This is why §4's `matchWakePhrase` was specified to route to "which
+connector" rather than only "is this a chat turn": the intent classifier is the
+front door to the dispatcher, and the chat panel is just the first room behind
+it. Concretely, the day-one code path (`wakePhrase → chat provider fetch →
+render reply`) is structured so that "chat provider" is one implementation of a
+`Connector` interface (`invoke(request): Promise<result>`) rather than a
+hardcoded special case — a one-interface refactor now, free, that keeps the
+later generalization from being a rewrite.
+
+### Confirm-before-execute is the default, not a feature
+
+Any connector invocation that reaches **outside the browser tab** must show the
+user what it is about to do before it happens. This is not a nicety; it is the
+property that makes "a log that can reach out to anything" safe enough to ship,
+and this org has already built the mechanism once. Two real precedents:
+
+- **`pincher`'s veto/sandbox layer** is the exact allow/deny/confirm shape a
+  remote connector dispatcher needs.
+  `pincher-ref/pincher-core/src/security/veto.rs` defines a three-way
+  `VetoDecision { Allow, Deny(reason), RequireConfirmation(reason) }`, a
+  pluggable `VetoPolicy` trait behind a thin `VetoEngine::check()` dispatcher,
+  and a default `RuleBasedVetoPolicy` whose `RequireCapability` rule turns any
+  action needing an ungranted capability into a `RequireConfirmation`. That is
+  precisely the "show me before you do it" gate: a connector call classified as
+  safe-and-local returns `Allow`; a forbidden target returns `Deny`; everything
+  that crosses the tab boundary returns `RequireConfirmation` until the user
+  approves. The companion `pincher-ref/pincher-core/src/security/sandbox.rs`
+  adds capability-scoped execution (`Capability { Network, FilesystemRead,
+  FilesystemWrite, Subprocess, Gpu }`, `CapabilityManifest`, and a fail-closed
+  landlock/bwrap path that refuses to run unsandboxed if sandboxing cannot be
+  applied). This generalizes pincher's own known-vs-novel matcher distinction
+  (`reflex/matcher.rs`: Exact ≥ 0.80 fires, Similar 0.55–0.80 flags, Novel <
+  0.55 hands off — §4) from *local reflexes* to *remote connectors*: the
+  equivalent of "Exact" is a connector call the user has approved before (or
+  that stays in-tab); the equivalent of "Similar/Novel" is anything reaching a
+  new target, which defaults to `RequireConfirmation`.
+- **`git-native-agents`' named-agent message-passing** is the addressing
+  precedent: a sender addresses a named recipient by writing a message into the
+  recipient's workspace (`send(from, to, msg)` drops an `inbox/<id>` file and
+  commits it in the recipient's repo — `docs/research/git-native-agents-deep-review.md`
+  §1). The *shape* — "address a named thing, hand it a request, let it produce a
+  result" — is exactly the connector-dispatch shape, and it is the model for how
+  one connector (e.g. the log) addresses another named agent (e.g. "hermes" on a
+  laptop). Honesty demands repeating what that same deep review found: the
+  upstream implementation has real concurrency bugs (git index-lock contention
+  under concurrent writes, reproduced at 92% failure on 12 concurrent sends) and
+  zero tests, so it is a *pattern* precedent, not a drop-in dependency — fork it
+  as a hardening task, not an import.
+
+The dispatcher this core ships therefore reuses pincher's three-way decision
+verbatim: **`Allow` for in-tab/no-side-effect calls (the §5 chat provider today);
+`RequireConfirmation` as the default for anything that leaves the tab; `Deny`
+for targets the deployment's connector allowlist does not contain.** Casey's "I
+want to see an overview of your prompts before you send them" is not a feature
+he asked for — it is the `RequireConfirmation` branch doing its job, and it is
+on by default, not opt-in.
+
+### Risk-tiering by deployment — the real security boundary, not a restriction
+
+The SSH-credential problem ("the web version has the ssh to the oracle in its
+connectors") is resolved by where the software runs, not by a policy the user
+could talk their way past. State it as the actual boundary:
+
+- **The hosted `activelog.ai` web build ships a safe connector set only** — the
+  §5 BYOK chat providers (and, later, simple API-reachable services that take a
+  user-supplied key over the same direct-`fetch`, no-org-proxy path). **No raw
+  SSH, no direct hardware bus access, no shell.** These connectors cannot leave
+  the tab in a dangerous sense because the tab has nothing dangerous to reach:
+  a `fetch()` to an API endpoint is the most it does.
+- **The high-stakes connector set — SSH sessions to remote boxes, hardware
+  bridges, driving another machine's agent — is available only on the "download
+  and run locally" deployment** that §3 already names as Casey's offline vision
+  ("download the entire page with their data to run the whole thing locally").
+  There, the software runs on hardware the user fully controls, and the
+  high-stakes credentials (SSH keys, hardware-bus access) are held by a **local
+  broker/agent process** on that machine — never entered into the browser tab,
+  never transmitted through any server this org operates. The browser UI talks
+  to the local broker over `localhost` (the same shape, and the same
+  `OLLAMA_ORIGINS`-class setup step, as the §5 local-Ollama connector), and the
+  broker is what actually holds the key and opens the SSH session after the
+  dispatcher's `RequireConfirmation` fires.
+
+The boundary, stated so it cannot be read as a soft policy: **SSH private keys
+and equivalent high-stakes credentials must never be entered into the hosted web
+version at all — by design, not by request.** The hosted build has no field for
+them, no connector type that consumes them, and no code path that could exfiltrate
+one, because the credential never reaches the tab. (`ROADMAP.md` §Step 5 frames
+the deploy model as the user's own Cloudflare account / linked storage; the
+local-broker path is the §3 offline property extended from "storage and
+transcription run locally" to "connectors run locally," and it is the only
+deployment shape in which the dangerous connector set is wired up.)
+
+### Where the heaviest version of this actually lives
+
+The "ship's computer" instantiation — SSH to remote dev boxes, addressing other
+named agents, driving hardware, projecting a dashboard of controls for "the
+application of the room they are in" — is the natural specialization of the
+**`cocapn.ai` skin**, which `ROADMAP.md` §Step 5 already frames as the
+hardware/control-oriented skin ("`fishinglog.ai`/`cocapn.ai`/`cocapn.com`
+(hardware control, vessel voice backbone)"). The split is deliberate and load-
+bearing:
+
+- **The generic core (this doc, `activelog.ai`) ships the *pattern*** — the
+  `Connector` interface, the §4 intent-classifier front door, the
+  confirm-before-execute dispatcher, the risk-tiering rule that keeps the hosted
+  build to the safe set. It ships exactly one real connector (BYOK chat) and the
+  shape for more.
+- **`cocapn.ai` ships the *dangerous instantiation*** — the SSH/hardware/named-
+  agent connector set, the local broker that holds those credentials, the
+  dashboard projection Casey describes. It is a later skin, gated identically to
+  the other seven by the Step 5 "Skinning gate" (no skins until the core is real
+  by §8's bar), and it is where §7's currently-parked hardware items (ESP32
+  code-gen/upload, autopilot I/O panels) land when they land — this subsection
+  does *not* un-park them, it names the skin and the primitive they would be
+  built on top of when the gate opens.
+
+This keeps the reference core honest (it claims only the chat connector, which
+is ✅ real) while making the eventual `cocapn.ai` path a matter of instantiating
+a primitive that already exists, rather than a fresh architecture that has to be
+retrofitted onto a core that never expected it.
 
 ---
 
