@@ -451,6 +451,20 @@ split the sprawling repo family into a documented core plus optional
 extras; add real persistence beyond flat JSONL; get honest test-coverage
 numbers rather than claimed ones.
 
+**A fourth candidate was ruled out, 2026-07-09.** `SuperInstance/conservation-spectral-python`'s
+own README carried a badge claiming it was published as `cocapn` — a lead
+worth checking rather than assuming. It was checked the same way: download
+both wheels, compare file hashes, check whether either's changelog cites
+commits that exist in the other's history. Verdict: **no match.** The
+`cocapn==0.3.0` wheel is the Cocapn Fleet async multi-agent engine
+(`engine.py`, `models.py`, `server.py`, `validation_loop.py`); this repo's
+real code is an unrelated spectral-graph-conservation library, genuinely
+published under its own correct name, `conservation-spectral==0.1.0`
+(SHA-256-verified file-for-file match). The repo's own badge was simply
+wrong and has been fixed. This doesn't change Step 4's gate — the orphaned
+`cocapn` package's real source is still unknown — but it closes off one
+specific lead so it doesn't get re-investigated later.
+
 **Also newly found**: a coherent, genuinely real Rust/C/Zig/WASM
 bare-metal tier underneath the Python core (deadband/PID/NMEA/device
 primitives — `cocapn-marine`, `cocapn-core`, `cocapn-c`, `cocapn-zig`,
