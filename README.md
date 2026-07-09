@@ -1,23 +1,12 @@
 # PurplePincher
 
-A hermit crab does not grow its own shell. It finds one that another creature
-built and outgrew, moves in, and hardens its soft body against the parts of the
-world a shell is good at surviving. When a crab outgrows its shell, something
-remarkable can happen on certain beaches: crabs gather at a vacant shell, line
-up smallest to largest, and the moment one crab the right size claims it, the
-whole line shifts up at once — each crab stepping into the shell the next one
-just left. Biologists call it a vacancy chain. In its cooperative form, the
-exchange only completes when both animals end up better fitted than before. A
-trade that leaves one crab worse off doesn't happen.
-
-PurplePincher is the shell.
-[SuperInstance](https://github.com/SuperInstance) is a ~4,100-repo research
-sketchbook — one person thinking out loud in code, fast and uneven and honest
-about being uneven. Ideas start soft there. A few of them harden here, after
-they have been built for real, tested against their actual use, documented so
-every claim is literally true, and stripped of the speculative framing they
-were born inside. The name comes from `pincher`, the sketchbook's reflex engine
-and the first idea to earn its shell.
+PurplePincher is a GitHub organization that curates production‑quality
+repositories derived from the [SuperInstance](https://github.com/SuperInstance)
+research sketchbook (~4,100 repos). Sketchbook ideas are speculative and often
+incomplete; a few of them are hardened here — verified end‑to‑end, documented
+to match actual behavior, and stripped of speculative framing. The name comes
+from `pincher`, the sketchbook's reflex engine and the first idea to earn its
+shell.
 
 The full argument behind the organization's direction is the essay:
 **[docs/PARADIGM.md](./docs/PARADIGM.md)**. The single decision record for what
@@ -141,26 +130,18 @@ the adoption bar on a candidate is in
 The essay ([docs/PARADIGM.md](./docs/PARADIGM.md)) develops the organization's
 direction at length. The parts of it that are not yet code:
 
-- **Voice-to-firmware over USB (the ESP32 chapter).** The scenario is:
-  describe, in the same spoken-log voice DeckBoss already uses (*"wire this
-  up to run the cabin lights"*), what a bare ESP32 should do, and have a
-  system that understands the log write the firmware, push it to the chip,
-  and tell you which pin goes where.
+- **Voice-to-firmware over USB (the ESP32 chapter).** The scenario: a user
+  describes a circuit using the same spoken‑log interface DeckBoss already
+  provides (*"wire this up to run the cabin lights"*); a system writes the
+  firmware, pushes it over USB to a bare ESP32, and reports the pin
+  assignments. This implements the hermit‑crab partnership: the agent has
+  full knowledge of the log and can generate code, while the human handles
+  wiring and physical verification — each is the other's only path into a
+  domain the other cannot enter on its own. Neither supervises from above;
+  the design intentionally avoids a PurplePincher‑operated server between
+  user and data.
 
-  This is where the crab metaphor cashes in. The agent holds software-writing
-  speed and a memory of the whole log that the human does not have. The human
-  holds hands that can strip a wire, eyes that can watch a relay click or smell
-  insulation starting to cook — things the agent structurally cannot do and is
-  not pretending it can. Neither is supervising the other from above. Each is
-  the other's only way into a domain it cannot enter. Like the crabs at a vacant
-  shell, the exchange only works because both come away more capable than they
-  went in: the human gets firmware written in seconds from a history no single
-  command could carry, and the agent gets a body in the physical world. That
-  mutuality — not "AI with a human safety check" — is the partnership this org
-  is building toward.
-
-  This is the direction the org is building toward, not code you can install
-  today.
+  This is direction, not code you can install today.
 - **The sharing chapter ("the second boat").** One step past the ESP32
   chapter: a captain and their agent build something new, and the captain
   publishes it as a public repository under their own GitHub account, so
