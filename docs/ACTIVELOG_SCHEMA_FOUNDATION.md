@@ -706,6 +706,160 @@ flagship at the extracted core is explicitly deferred
 | S7 | `ConnectorDecl` is **one record schema, two documents** (local AppConfig connector list; published `levers[]`) — published instances credential-free and confidence-clamped by construction | Phase 3 seam ↔ rooms | 🔮 with a ✅ day-one consequence (build the chat provider as a `ConnectorDecl`) |
 | S8 | Skin rule: new namespaces + vocabulary packages + policy only; body-level conventions (decimal-string money) live in packages; `prev` hash chain stays off until a skin's policy turns it on | eight skins | 🔮 |
 | S9 | Fix the live `activelog.ai` page drift (`ts` string example; "already powers DeckBoss" phrasing) at the next content pass | activelog repo | ⚠️ doc-truth item |
+| S10 | Phase 1 shipped `id` primary, `dev`/`seq` optional/nullable, **no `mono`** — diverges from §1.2/§4 (which wanted `dev`+`seq` required as the merge key, `id` demoted). **Defer** the tightening to the R1→R2 export / first sync; the capture path already stamps `dev`+`seq` on every entry, so nothing is un-keyed. §6 supersedes §4's "correct now" (the code shipped the divergence deliberately) | Phase 1 → Phase 2 trigger | ⚠️ deferred with a 🔮 trigger (§6) |
+
+---
+
+## 6. Phase 1 reconciliation — `(dev, seq)` shipped optional, not primary. Defer, with a trigger.
+
+**Why this section exists.** §0.3 and §4 were written at the `activelog`
+branch's scaffold tip (`18a0458`, "chore: bootstrap the Phase 1 app
+scaffold"), when no schema code had landed and §4's recommendation was
+"correct at extraction time — this week, in the same PR that lands
+`log-entry.ts`." Extraction has since happened: the branch is now at tip
+`0698229` ("fix: wire IndexedDB fallback; save recording on 5-min
+auto-stop"), and `app/src/core/types/log-entry.ts` is real, shipped code.
+**It did not take §4's recommendation.** This section records what landed,
+gives a verdict, and supersedes §0.3's "no schema choice yet" and §4's
+"correct now" framing with what actually shipped. It does not re-open
+§1–§3; every claim about Phase 1 below is traced to the file read in full
+at tip `0698229`.
+
+### 6.1 What shipped, cited to the file
+
+Reading `activelog/app/src/core/types/log-entry.ts` (227 lines, full), the
+shipped `logEntryShape` (lines 164–179) is:
+
+- `id: uuidV4` (line 165) — **required**, and the declared identity. The
+  `newEntrySkeleton` doc comment (lines 196–200) calls `id`, `timestamp`,
+  and `thread_id` "the identity triple."
+- `dev: z.string().nullable().optional()` (line 167) and
+  `seq: z.number().int().nonnegative().nullable().optional()` (line 168) —
+  **optional/nullable secondary envelope metadata.** This is exactly the
+  pragmatic choice this addendum exists to reconcile, and the file's header
+  comment (lines 22–26) defends it on the record: *"The envelope-derived
+  metadata fields (`dev`, `seq`, `timestamp`, `gps`) are optional/nullable
+  — ActiveLog must not force a caller to have a device id, a sequence
+  number, or a GPS fix just to record something."*
+- **No `mono` field at all.** §1.2 proposed `mono` (nullable); it was
+  dropped entirely.
+
+Against the doc's recommendation this is a double divergence: §1.2 wanted
+`dev`/`seq` **required** as the merge key with `id` demoted to "not the
+merge key in either representation" (§1.3), and §4 wanted it corrected in
+the same PR that landed this file. Neither happened.
+
+### 6.2 The divergence is narrower than it looks — the capture path already keys on `(dev, seq)`
+
+Three facts from the shipped code shrink the gap considerably:
+
+1. **The sole capture-construction path already requires `dev`+`seq`.**
+   `app/src/core/tensor-log/entry-builder.ts` `buildEntry` (lines 25–27)
+   declares `dev: string; seq: number;` as **required** params and stamps
+   both on every entry (lines 59–60). The live caller is
+   `app/src/App.tsx` (lines 270–277), which supplies `dev: getDev()` — a
+   uuid minted once into `localStorage` (lines 49–56) — and `seq` from a
+   per-device counter (lines 58–62). **Every voice-captured entry in Phase
+   1 therefore carries a valid `(dev, seq)`.**
+2. **`(dev, seq)` is already a composite key in a live place:** the
+   audio-blob filename is `` `${dev}_${seq}_audio.${ext}` ``
+   (entry-builder.ts line 100).
+3. **The schema optionality leaks through no live construction path.**
+   `newEntrySkeleton` (log-entry.ts lines 202–227) defaults `dev`/`seq` to
+   `null`, but has **zero callers** in `app/src` (verified by search). It
+   is reserved for the import path, which is real but secondary:
+   `storage/adapters/local-zip.ts` `importZip()` (line 99), with
+   `storage/interface.ts` (line 90) noting an "imported or
+   manually-entered entry may have no capture time."
+
+So the shape §4 feared — "entries would write, persist, and read back fine
+on one device, and the gap would surface only at the first second-device
+merge" — is true at the *schema* level but **not true of the capture
+data**: the builder guarantees the merge key on every real entry. The
+optionality is a safety valve for imports, not an accumulation of
+un-keyed captures.
+
+### 6.3 One genuine residual drift: the builder's comment now contradicts the type
+
+`entry-builder.ts` still carries a stale TODO and a stale rationale. Its
+header (lines 15–23) says it *"assumes the trimmed, domain-neutral
+LogEntry shape … keyed by `dev` + `seq` (not deckboss's single uuid `id`)"*
+and ends *"TODO: confirm against core/types/log-entry.ts once merged."* The
+type it assumed never landed in that form; the merged type kept `id`
+primary and made `dev`/`seq` optional. The builder *behaves* as if
+`dev`/`seq` are required (correctly — see §6.2), but its comment now
+contradicts the file it cites. This is a comment/doc fix, not a schema
+change; it is noted here rather than applied because this addendum is
+recommendation-with-reasoning, the register of the doc's other open
+decisions. Recommend clearing it in the next touch to that file.
+
+### 6.4 Verdict: leave as-is now; defer with a trigger. Not "either could work."
+
+**Defer.** Tighten `dev`/`seq` to required, restore `mono`, and resolve the
+import policy at the first work that actually consumes the merge key — the
+R1→R2 export (§1.3) or the first cross-device sync (Phase 2). Until then,
+record the divergence (this section) and clear the builder comment (§6.3).
+
+The reason is technical, not procedural, and it is not "migration is
+annoying":
+
+1. **No Phase 1 code consumes the merge key.** The skins' set-union-on
+   `(dev,seq)` model (§3.1 businesslog; §3.3 cocapn's "each its own `dev`")
+   is an **R2 / event-level** operation, and R2 is unbuilt — §1.3 is a
+   mapping *table*, not shipped code. At the R1 level Phase 1 actually
+   runs, the only merge is corrections-union-within-an-entry, keyed on
+   entry identity; in single-device Phase 1 that identity can be the uuid
+   without harm, because uuids are globally unique — there is no collision
+   to resolve and corrections union correctly by `id`. `(dev, seq)` earns
+   its keep only when two *independent* devices each emit events that must
+   be reconciled, the Phase 2 moment §4 itself named. The §3 walkthrough
+   depends on `(dev, seq)` *existing* as the event-level merge key and on
+   the R1→R2 mapping being *possible*; it does **not** depend on
+   `(dev, seq)` being the primary TS-level key of the R1 `LogEntry`. Both
+   dependencies hold with the fields present and stamped on captures —
+   which they are (§6.2).
+2. **Making `dev`/`seq` required now is not mechanical — it forces a
+   product decision that should be made against a real consumer, not
+   back-solved to match a doc.** The schema is optional while the builder
+   is required precisely because of the import path (§6.2.3). Tightening
+   the schema means deciding what an imported entry's `(dev, seq)` *is*,
+   and the options are wrong-by-default without a consumer to measure
+   against: a synthetic per-import device id *invents* identity the source
+   lacked — the small lie the header comment at lines 22–26 is written to
+   avoid (the same honesty the `Correction.deviceId` comment at lines
+   131–135 defends by refusing to uuid-constrain it); a reserved
+   `dev: "import"` bucket *collapses* the merge key for every import,
+   defeating it; rejecting un-keyed imports *breaks* a stated Phase 1
+   capability. Forcing that choice now buys a guarantee nothing reads.
+3. **The harm §4 actually feared — "Phase 1 quietly violates its own
+   plan's only non-negotiable schema requirement" — is closed by this
+   section existing, not by the code changing.** Once the divergence is on
+   the record with a marker and a trigger, the residual cost of deferral is
+   only the mechanical migration at trigger time, and that migration is
+   small whenever it lands: the fields exist and are typed (optionality
+   → requiredness, no shape change), the capture builder already complies
+   (no capture-path change), and the sole real work is the import policy
+   from point 2 — unavoidable whenever you do it.
+
+This is no longer §4's easy case ("still in flight, nothing shipped,
+correct now"). That case is gone — the code shipped the divergence
+deliberately, with a reasoned header comment. This is the honest follow-on
+case: the divergence is recorded, the capture path is already compliant,
+and the one real decision is correctly deferred to the phase that needs
+it.
+
+**Trigger (🔮):** when work begins on the R1→R2 export (§1.3) or
+cross-device sync, tighten in the same PR — (a) drop
+`.nullable().optional()` on `dev`/`seq` in `logEntryShape`; (b) add the
+nullable `mono` from §1.2 (the browser `performance.now()` session-only
+caveat stands); (c) decide the import policy — recommend imports land
+stamped with the *importing* device's `dev` and a freshly-allocated `seq`,
+recorded as such, which is honest about provenance rather than inventing a
+foreign device; (d) add `dev`/`seq`/`mono` to `IMMUTABLE_FIELDS` so the
+existing compile-time coverage guard enforces them. Migration cost then is
+the 7 existing tests (4 in `entry-builder.test.ts`, 3 in
+`entry-serializer.test.ts`) plus the import path — small, and paid in the
+context where the invariant first does work.
 
 ---
 
